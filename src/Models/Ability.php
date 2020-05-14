@@ -13,6 +13,8 @@ class Ability extends Model
     public const GROUP_SYSTEM = 1;
     public const GROUP_ACCOUNT = 2;
 
+    protected $fillable = ['name', 'label', 'group'];
+
     /**
      * Get all of the roles that are assigned this ability.
      */

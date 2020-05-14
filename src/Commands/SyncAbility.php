@@ -7,6 +7,7 @@ use Rkj\Permission\Models\Ability;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 class SyncAbility extends Command
 {
@@ -15,24 +16,14 @@ class SyncAbility extends Command
      *
      * @var string
      */
-    protected $signature = 'ability:sync {--fresh}';
+    protected $signature = 'ability:parse {--fresh}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    protected $description = 'Parse and create ability from route name';
 
     /**
      * Execute the console command.
@@ -46,10 +37,24 @@ class SyncAbility extends Command
         if ($this->option('fresh')) $this->truncateAbility();
 
         foreach (Route::getRoutes() as $route) {
+            $name = $route->getName();
+
             $middlewares = $route->gatherMiddleware();
 
-            if (in_array('auth', $middlewares)) {
-                Ability::updateOrCreate(['name' => $route->getName()]);
+            $group = (Str::of($route->getPrefix())->ltrim('/') == 'admin') 
+                        ? Ability::GROUP_SYSTEM 
+                        : Ability::GROUP_ACCOUNT;
+
+            if (in_array('auth', $middlewares) && !empty($name)) {
+                
+                Ability::updateOrCreate(
+                    ['name' => $name], 
+                    [
+                        'name' => $name,
+                        'label' => Str::of($name)->replace(['.', ':'], ' ')->title(),
+                        'group' => $group
+                    ]
+                );
             }
         }
 
