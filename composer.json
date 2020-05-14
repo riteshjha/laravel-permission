@@ -1,0 +1,14 @@
+{
+    "name": "rkj/permission",
+    "description": "Laravel role and user based permission",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ritesh",
+            "email": "mailrkj@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
