@@ -3,6 +3,7 @@
 namespace Rkj\Permission;
 
 use Illuminate\Support\ServiceProvider;
+use Rkj\Permission\Commands\SyncAbility;
 
 class PermissionServiceProvider extends ServiceProvider
 {
@@ -23,23 +24,96 @@ class PermissionServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->bootCommands();
+
         $this->loadRoutesFrom(__DIR__.'/routes.php');
 
-        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
+        $this->loadViewsFrom($this->getViewPath(), 'permission');
 
-        $this->loadViewsFrom(__DIR__.'/views', 'permission');
+        $this->publishConfig();
 
-        $this->publishes([
-            __DIR__.'/config/permission.php' => config_path('permission.php')
-        ], 'config');
+        $this->publishMigrations();
 
-        $this->publishes([
-            __DIR__.'/views' => resource_path('views/vendor/permission'),
-        ], 'views');
+        $this->publishViews();
+    }
 
-        $this->publishes([
-            __DIR__.'/database/migrations/' => database_path('migrations')
-        ], 'migrations');
+    /**
+     * Publish package config
+     *
+     * @return void
+     */
+    protected function publishConfig()
+    {
+        $path = $this->getConfigPath();
 
+        $this->publishes([$path => config_path('permission.php')], 'config');
+    }
+
+    /**
+     * Publish package migrations
+     *
+     * @return void
+     */
+    protected function publishMigrations()
+    {
+        $path = $this->getMigrationsPath();
+
+        $this->publishes([$path => database_path('migrations')], 'migrations');
+    }
+
+    /**
+     * Publish package migrations
+     *
+     * @return void
+     */
+    protected function publishViews()
+    {
+        $path = $this->getViewPath();
+        
+        $this->publishes([$path => resource_path('views/vendor/permission')], 'views');
+    }
+
+    /**
+     * Get package config path
+     *
+     * @return void
+     */
+    protected function getConfigPath()
+    {
+        return __DIR__ . '/config/permission.php';
+    }
+
+    /**
+     * Get package migrations path
+     *
+     * @return void
+     */
+    protected function getMigrationsPath()
+    {
+        return __DIR__ . '/database/migrations/';
+    }
+
+    /**
+     * Get package view path
+     *
+     * @return void
+     */
+    protected function getViewPath()
+    {
+        return __DIR__.'/views/permission';
+    }
+
+    /**
+     * Register package commands
+     *
+     * @return void
+     */
+    protected function bootCommands()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                SyncAbility::class,
+            ]);
+        }    
     }
 }

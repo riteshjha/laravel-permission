@@ -7,7 +7,7 @@ return [
 
         'role' => "App/Role", //role model namespace
 
-        'ability' => "Rkj/Models/Ability"
+        'ability' => "Rkj/Models/Ability" //Ability model that contain abilities
     ],
 
     'superAdmin' => 'superadmin', //specify super admin role. this role has all permissions
