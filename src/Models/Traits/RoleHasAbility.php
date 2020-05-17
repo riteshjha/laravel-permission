@@ -1,10 +1,16 @@
 <?php
 namespace Rkj\Permission\Models\Traits;
 
-use Illuminate\Support\Arr;
-use Rkj\Permission\Models\Ability;
-
 trait RoleHasAbility
 {
+    /**
+     * Get all Role abilities
+     *
+     * @return void
+     */
+    public function abilitables()
+    {
+        return $this->morphToMany(config('permission.model.ability'), 'abilitable')->withTimestamps()->withPivot('level');
+    }
     
 }

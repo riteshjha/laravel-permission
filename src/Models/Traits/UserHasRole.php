@@ -1,8 +1,7 @@
 <?php
 namespace Rkj\Permission\Models\Traits;
 
-use Illuminate\Support\Arr;
-use Rkj\Permission\Models\Ability;
+use Illuminate\Support\Str;
 
 trait UserHasRole
 {
@@ -23,7 +22,7 @@ trait UserHasRole
      */
     public function systemRoles()
     {
-        return $this->roles()->where('group', Ability::GROUP_SYSTEM);
+        return $this->roles()->where('group', config('permission.model.ability')::GROUP_SYSTEM);
     }
 
     /**
@@ -33,7 +32,17 @@ trait UserHasRole
      */
     public function accountRoles()
     {
-        return $this->roles()->where('group', Ability::GROUP_ACCOUNT);
+        return $this->roles()->where('group', config('permission.model.ability')::GROUP_ACCOUNT);
+    }
+
+    /**
+     * Get all User abilities
+     *
+     * @return void
+     */
+    public function abilitables()
+    {
+        return $this->morphToMany(config('permission.model.ability'), 'abilitable')->withTimestamps()->withPivot('level');
     }
 
     /**
@@ -69,5 +78,128 @@ trait UserHasRole
         }
 
         $this->roles()->sync($role, false);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return boolean
+     */
+    public function isSuperAdmin()
+    {
+        return $this->hasRole(config('permission.role.superAdmin'));
+    }
+
+    /**
+     * Check user is at system level
+     *
+     * @return boolean
+     */
+    public function isSystemUser()
+    {
+        return $this->roles->pluck('group')->contains(config('permission.model.ability')::GROUP_SYSTEM);
+    }
+
+    /**
+     * Check user is at system level
+     *
+     * @return boolean
+     */
+    public function isAccountUser()
+    {
+        return $this->roles->pluck('group')->contains(config('permission.model.ability')::GROUP_ACCOUNT);
+    }
+
+    /**
+     * Fetch the user's abilities.
+     *
+     * @return array
+     */
+    public function abilities()
+    {
+        $roleAbilities = $this->roles->map->abilitables->flatten();
+
+        return $roleAbilities->merge($this->abilitables);
+    }
+
+    /**
+     * Check user has access to ability
+     *
+     * @param string $ability
+     * @return boolean
+     */
+    public function hasAccess($ability, $params)
+    {
+        $result = false;
+
+        $model = null;
+
+        $permission = $this->abilities()->where('name', $ability)->first();
+        
+        $level = ($permission) ? $permission->pivot->level : 0;
+
+        if ($level > 0) { //$level > 0 means has permission
+
+            $model = (count($params) > 0) ? $params[0] : null;
+
+            if (config('permission.level') == 'account' && $this->isAccountUser() && $model) {
+                $result = $this->accountLevelPermission($model, $level);
+            }else if($this->isAccountUser() && $model){
+                $result = $this->isOwner($model);
+            }
+
+            $result = true;
+        }
+
+        return $this->afterAccess($result, $ability, $model);
+    }
+
+    /**
+     * This method can be used to overwrite the permission result 
+     *
+     * @param boolean $result
+     * @param string $ability
+     * @param App\Models\Model $model
+     * @return void
+     */
+    protected function afterAccess($result, $ability, $model = null)
+    {
+        return $result;
+    }
+
+    /**
+     * Check Acount level permission
+     *
+     * @param App\Models\Model $model
+     * @param int $level
+     * @return void
+     */
+    protected function accountLevelPermission($model, $level)
+    {
+        return $level == config('permission.model.ability')::LEVEL_ACCOUNT
+            ? $this->isAccountOwner($model)
+            : $this->isOwner($model);
+    }
+
+    /**
+     * Check user is an owner of model
+     * @param Illuminate\Database\Eloquent\Model  $model
+     * @return boolean
+     */
+    protected function isOwner($model){
+        $user_id = Str::of(config('permission.model.user'))->append('_id');
+
+        return $model->{$user_id} = $this->id;
+    }
+
+    /**
+     * Check user's account is an owner of model
+     * @param Illuminate\Database\Eloquent\Model  $model
+     * @return boolean
+     */
+    protected function isAccountOwner($model){
+        $account_id = Str::of(config('permission.model.account'))->append('_id');
+
+        return $model->owner->{$account_id} = $this->{$account_id};
     }
 }

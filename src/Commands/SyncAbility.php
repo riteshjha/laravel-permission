@@ -5,6 +5,7 @@ namespace Rkj\Permission\Commands;
 use Rkj\Permission\Models\Ability;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
@@ -16,7 +17,7 @@ class SyncAbility extends Command
      *
      * @var string
      */
-    protected $signature = 'ability:parse {--fresh}';
+    protected $signature = 'ability:sync {--fresh}';
 
     /**
      * The console command description.
@@ -42,12 +43,12 @@ class SyncAbility extends Command
             $middlewares = $route->gatherMiddleware();
 
             $group = (Str::of($route->getPrefix())->ltrim('/') == 'admin') 
-                        ? Ability::GROUP_SYSTEM 
-                        : Ability::GROUP_ACCOUNT;
+                        ? config('permission.model.ability')::GROUP_SYSTEM 
+                        : config('permission.model.ability')::GROUP_ACCOUNT;
 
             if (in_array('auth', $middlewares) && !empty($name)) {
                 
-                Ability::updateOrCreate(
+                config('permission.model.ability')::updateOrCreate(
                     ['name' => $name], 
                     [
                         'name' => $name,
@@ -70,7 +71,7 @@ class SyncAbility extends Command
     {
         Schema::disableForeignKeyConstraints();
 
-        Ability::truncate();
+        config('permission.model.ability')::truncate();
 
         Schema::enableForeignKeyConstraints();
     }

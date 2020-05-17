@@ -2,6 +2,7 @@
 
 namespace Rkj\Permission;
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Rkj\Permission\Commands\SyncAbility;
 
@@ -35,6 +36,12 @@ class PermissionServiceProvider extends ServiceProvider
         $this->publishMigrations();
 
         $this->publishViews();
+
+        Gate::before(function ($user, $ability, $params) {
+            if ($user->isSuperAdmin() || $user->hasAccess($ability, $params)) {
+                return true;
+            }
+        });
     }
 
     /**

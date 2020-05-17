@@ -2,17 +2,22 @@
 
 return [
 
-    'model' =>[
-        'user' => "App\User", //user model with namespace
+    'level' => 'account', // set permission level ('account' or 'owner') 
 
-        'role' => "App\Role", //role model with namespace
+    'model' => [
+        'account' => "App\Account", //account model namespace, if using account level check
 
-        'ability' => "Rkj\Models\Ability" //Ability model that contain abilities
+        'user' => "App\User", //user model namespace
+
+        'role' => "App\Role", //role model namespace
+
+        'ability' => "Rkj\Permission\Models\Ability" //Ability model that contain abilities
     ],
 
-    'superAdmin' => 'superadmin', //specify super admin role. this role has all permissions
+    'role' => [
+        'superAdmin' => 'superadmin', //specify role name which has all permissions
+    ],
 
-    
-
+    'cacheKey' => 'permission_cache'
 
 ];
