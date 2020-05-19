@@ -18,6 +18,10 @@ return [
         'superAdmin' => 'superadmin', //specify role name which has all permissions
     ],
 
-    'cacheKey' => 'permission_cache'
+    'cacheKey' => 'permission_cache',
+
+    'itemPerPage' => 15,
+
+    'view.layout' => 'layouts.main'
 
 ];

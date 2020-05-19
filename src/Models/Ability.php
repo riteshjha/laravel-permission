@@ -42,7 +42,7 @@ class Ability extends Model
      */
     public function isSystemGroup()
     {
-        return $this->group == self::GROUP_SYSTEM;
+        return $this->group == static::GROUP_SYSTEM;
     }
 
     /**
@@ -52,7 +52,7 @@ class Ability extends Model
      */
     public function isAccountGroup()
     {
-        return $this->group == self::GROUP_ACCOUNT;
+        return $this->group == static::GROUP_ACCOUNT;
     }
 
     /**
@@ -64,4 +64,26 @@ class Ability extends Model
     {
         return Str::of($this->name)->contains(':');
     }
+
+    /**
+     * permission levels
+     *
+     * @return void
+     */
+    public static function permissionLevels()
+    {
+        return [static::LEVEL_OWNER => 'Owner', static::LEVEL_ACCOUNT => 'Account'];
+    }
+
+    /**
+     * role groups
+     *
+     * @return void
+     */
+    public static function roleGroups()
+    {
+        return [static::GROUP_SYSTEM => 'System', static::GROUP_ACCOUNT => 'Account'];
+    }
+
+    
 }
