@@ -20,8 +20,5 @@ return [
 
     'cacheKey' => 'permission_cache',
 
-    'itemPerPage' => 15,
-
-    'view.layout' => 'layouts.main'
-
+    'itemPerPage' => 15
 ];

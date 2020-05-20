@@ -27,8 +27,6 @@ class PermissionServiceProvider extends ServiceProvider
     {
         $this->bootCommands();
 
-        $this->loadRoutesFrom(__DIR__.'/routes.php');
-
         $this->loadViewsFrom($this->getViewPath(), 'permission');
 
         $this->publishConfig();
@@ -36,6 +34,8 @@ class PermissionServiceProvider extends ServiceProvider
         $this->publishMigrations();
 
         $this->publishViews();
+
+        $this->publishAssets();
 
         Gate::before(function ($user, $ability, $params) {
             if ($user->isSuperAdmin() || $user->hasAccess($ability, $params)) {
@@ -69,7 +69,7 @@ class PermissionServiceProvider extends ServiceProvider
     }
 
     /**
-     * Publish package migrations
+     * Publish package views
      *
      * @return void
      */
@@ -78,6 +78,16 @@ class PermissionServiceProvider extends ServiceProvider
         $path = $this->getViewPath();
         
         $this->publishes([$path => resource_path('views/vendor/permission')], 'views');
+    }
+
+    /**
+     * Publish package assets
+     *
+     * @return void
+     */
+    protected function publishAssets()
+    {        
+        $this->publishes([__DIR__ . '/assets' => public_path('vendor/permission')], 'public');
     }
 
     /**
@@ -97,7 +107,7 @@ class PermissionServiceProvider extends ServiceProvider
      */
     protected function getMigrationsPath()
     {
-        return __DIR__ . '/database/migrations/';
+        return __DIR__ . '/database/migrations';
     }
 
     /**
@@ -107,7 +117,7 @@ class PermissionServiceProvider extends ServiceProvider
      */
     protected function getViewPath()
     {
-        return __DIR__.'/views/permission';
+        return __DIR__.'/views';
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace Rkj\Permission\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Artisan;
@@ -29,11 +29,11 @@ class AbilityController extends Controller
     public function roles()
     {
         $data = [
-            'items' => config('permission.model.role')::all(),
+            'items' => config('permission.model.role')::with('users')->paginate(config('permission.itemPerPage')),
             'roleGroups' => config('permission.model.ability')::roleGroups()
         ];
 
-        return view('permission.roles', $data);
+        return view('permission::roles', $data);
     }
 
     /**
@@ -45,12 +45,11 @@ class AbilityController extends Controller
     public function index()
     {
         $data = [
-            'items' => config('permission.model.ability')::with('roles')
-                        ->paginate(config('permission.itemPerPage')),
+            'items' => config('permission.model.ability')::with('roles')->paginate(config('permission.itemPerPage')),
             'roleGroups' => config('permission.model.ability')::roleGroups()
         ];
 
-        return view('permission.abilities', $data);
+        return view('permission::abilities', $data);
     }
 
     /**
@@ -88,7 +87,7 @@ class AbilityController extends Controller
             'selectedRole' => $role
         ];
 
-        return view('permission.index', $data);
+        return view('permission::index', $data);
     }
 
     /**

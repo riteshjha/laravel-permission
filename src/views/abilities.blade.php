@@ -1,4 +1,4 @@
-@extends(config('permission.view.layout'))
+@extends('permission::layouts.main')
 
 @section('pageTitle')
   Abilities
@@ -10,21 +10,27 @@
             <div class="col-sm-12">
                 <form id="abilityListForm">
                     @csrf
-                    <div class="table">
+                    <table class="table">
+                        <tr>
+                            <th style="width:100px">Group</th>
+                            <th>Name</th>
+                            <th>Lable</th>
+                            <th style="width:100px">Roles</th>
+                        </tr>
                         @forelse ($items as $ability)
                             <tr>
                                 <?php $roles = $ability->roles()->wherePivot('level','<>', 0)->get() ?>
                                 <td><label class="btn btn-sm {{ $ability->group == 1 ? 'btn-danger' : 'btn-primary' }}">{{ $roleGroups[$ability->group] ?? '-' }}</label></td>
                                 <td>{{ $ability->name }}</td>
-                                <td><a href="#" class="editable" id="label" data-type="text" data-pk="{{ $ability->id }}" data-url="{{ route('persmission.updateAbility', ['ability' => $ability]) }}" data-title="Enter Label">
+                                <td><a href="#" class="editable" id="label" data-type="text" data-pk="{{ $ability->id }}" data-url="{{ route('permission.updateAbility', ['ability' => $ability]) }}" data-title="Enter Label">
                                     {{ $ability->label ?? '--' }}</a>
                                 </td>
                                 <td>{{ ($roles->count() > 0) ? $roles->implode('name', ',') : '--' }}</td>
                             </tr>
-                        @else 
+                        @empty 
                             <tr><td colspan="{{ $noCols ?? '' }}">{{ $empty ?? '' }}</td></tr>
                         @endforelse
-                    </div>
+                    </table>
                 </form>
             </div>
         </div>
@@ -42,21 +48,21 @@
     </div>
 @endsection
 
-@section('pageHeadAssets')
-<link href="{{ asset('js/plugins/x-editable/bootstrap-editable.css') }}" rel="stylesheet">
+@section('styles')
+<link href="{{ asset('vendor/permission/js/x-editable/bootstrap-editable.css') }}" rel="stylesheet">
 @endsection
 
-@section('pageAssets')
-<script src="{{ asset('js/plugins/x-editable/bootstrap-editable.min.js') }}"></script>
+@section('scripts')
+<script src="{{ asset('vendor/permission/js/x-editable/bootstrap-editable.min.js') }}"></script>
 <script>
     $(document).ready(function() {
-        $('.editable').editable();
+        //$('.editable').editable();
     });
 
     function syncAbility(){
         $('#sync').text('Loading...').attr('disabled', true);
 
-        $.get('{{ route("admin.syncAbilities") }}', function(response){
+        $.get('{{ route("permission.syncAbilities") }}', function(response){
             window.location.reload(true);
         });
     }
