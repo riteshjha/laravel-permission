@@ -4,6 +4,7 @@ namespace Rkj\Permission\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Rkj\Permission\Facades\Permission;
 
 class Ability extends Model
 {
@@ -20,9 +21,7 @@ class Ability extends Model
      */
     public function roles()
     {
-        $role = config('permission.model.role');
-
-        return $this->morphedByMany($role, 'abilitable')->withTimestamps()->withPivot('level');
+        return $this->morphedByMany(Permission::roleModel(), 'abilitable')->withTimestamps()->withPivot('level');
     }
 
     /**
@@ -30,9 +29,7 @@ class Ability extends Model
      */
     public function users()
     {
-        $user = config('permission.model.user');
-
-        return $this->morphedByMany($user, 'abilitable')->withTimestamps()->withPivot('level');
+        return $this->morphedByMany(Permission::userModel(), 'abilitable')->withTimestamps()->withPivot('level');
     }
 
     /**
@@ -72,7 +69,11 @@ class Ability extends Model
      */
     public static function permissionLevels()
     {
-        return [static::LEVEL_OWNER => 'Owner', static::LEVEL_ACCOUNT => 'Account'];
+        $levels = collect([static::LEVEL_OWNER => 'Owner', static::LEVEL_ACCOUNT => 'Account']);
+
+        return config('permission.level') == 'account'
+                ?  $levels->all()
+                :  $levels->except(static::LEVEL_ACCOUNT)->all();
     }
 
     /**

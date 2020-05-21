@@ -1,6 +1,8 @@
 <?php
 namespace Rkj\Permission\Models\Traits;
 
+use Rkj\Permission\Facades\Permission;
+
 trait RoleHasAbility
 {
     /**
@@ -10,7 +12,7 @@ trait RoleHasAbility
      */
     public function users()
     {
-        return $this->belongsToMany(config('permission.model.user'))->withTimestamps();
+        return $this->belongsToMany(Permission::userModel())->withTimestamps();
     }
 
     /**
@@ -20,7 +22,7 @@ trait RoleHasAbility
      */
     public function abilitables()
     {
-        return $this->morphToMany(config('permission.model.ability'), 'abilitable')->withTimestamps()->withPivot('level');
+        return $this->morphToMany(Permission::abilityModel(), 'abilitable')->withTimestamps()->withPivot('level');
     }
 
     /**
@@ -31,7 +33,7 @@ trait RoleHasAbility
      */
     public function scopeNoSuperAdmin($query)
     {
-        $query->where('name', '<>', config('permission.role.superAdmin'));
+        $query->where('name', '<>', Permission::superAdminRole());
     }
 
     /**
@@ -41,7 +43,7 @@ trait RoleHasAbility
      */
     public function isSuperAdmin()
     {
-        return $this->name == config('permission.role.superAdmin');
+        return $this->name == Permission::superAdminRole();
     }
 
 }

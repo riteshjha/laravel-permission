@@ -5,6 +5,7 @@ namespace Rkj\Permission\Controllers;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Validator;
+use Rkj\Permission\Facades\Permission;
 
 class AbilityController extends Controller
 {
@@ -29,8 +30,8 @@ class AbilityController extends Controller
     public function roles()
     {
         $data = [
-            'items' => config('permission.model.role')::with('users')->paginate(config('permission.itemPerPage')),
-            'roleGroups' => config('permission.model.ability')::roleGroups()
+            'items' => Permission::roleModel()::with('users')->paginate(config('permission.itemPerPage')),
+            'roleGroups' => Permission::abilityModel()::roleGroups()
         ];
 
         return view('permission::roles', $data);
@@ -45,8 +46,8 @@ class AbilityController extends Controller
     public function index()
     {
         $data = [
-            'items' => config('permission.model.ability')::with('roles')->paginate(config('permission.itemPerPage')),
-            'roleGroups' => config('permission.model.ability')::roleGroups()
+            'items' => Permission::abilityModel()::with('roles')->paginate(config('permission.itemPerPage')),
+            'roleGroups' => Permission::abilityModel()::roleGroups()
         ];
 
         return view('permission::abilities', $data);
@@ -62,7 +63,7 @@ class AbilityController extends Controller
     {
         $params[request('name')] = request('value');
 
-        config('permission.model.ability')::update($params, $id);
+        Permission::abilityModel()::update($params, $id);
 
         return response()->json();
     }
@@ -77,14 +78,16 @@ class AbilityController extends Controller
     {
         $perPage = request('perPage', config('permission.itemPerPage'));
 
-        $role = config('permission.model.role')::findOrFail($roleId);
+        $abilities = Permission::abilityModel()::with(['roles' => function ($query) use ($roleId) {
+            $query->where('id', $roleId);
+        }])->paginate($perPage);
 
         $data = [
-            'items' => $role->abilitables()->paginate($perPage),
-            'roleGroups' => config('permission.model.ability')::roleGroups(),
-            'permissionLevels' => config('permission.model.ability')::permissionLevels(),
-            'roles' => config('permission.model.role')::noSuperAdmin()->get(),
-            'selectedRole' => $role
+            'items' => $abilities,
+            'roleGroups' => Permission::abilityModel()::roleGroups(),
+            'permissionLevels' => Permission::abilityModel()::permissionLevels(),
+            'roles' => Permission::roleModel()::noSuperAdmin()->get(),
+            'selectedRoleId' => $roleId
         ];
 
         return view('permission::index', $data);
@@ -95,7 +98,7 @@ class AbilityController extends Controller
      */
     public function updateRoleAbility($roleId)
     {
-        $role = config('permission.model.role')::findOrFail($roleId);
+        $role = Permission::roleModel()::findOrFail($roleId);
 
         $data = [
             'abilities' => array_keys(request('permissions')),

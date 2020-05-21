@@ -37,8 +37,14 @@
             </div>
         </div>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+        <script>
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        </script>
         @yield('scripts')
-        
     </body>
 </html>
 

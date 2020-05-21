@@ -25,7 +25,7 @@
                             <td>{{ $role->users()->count() }}</td>
                             <td>
                                 @if(!$role->isSuperAdmin())
-                                    <a href="{{ route('permission.roleAbilities', ['role' => $role]) }}" class="btn btn-info"><i class='fa fa-lock'></i></a>
+                                    <a href="{{ route('permission.roleAbilities', $role->id) }}" class="btn btn-info"><i class='fa fa-lock'></i></a>
                                 @else
                                     --
                                 @endif

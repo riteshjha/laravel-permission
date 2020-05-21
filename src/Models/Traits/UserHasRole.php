@@ -2,6 +2,7 @@
 namespace Rkj\Permission\Models\Traits;
 
 use Illuminate\Support\Str;
+use Rkj\Permission\Facades\Permission;
 
 trait UserHasRole
 {
@@ -12,7 +13,7 @@ trait UserHasRole
      */
     public function roles()
     {
-        return $this->belongsToMany(config('permission.model.role'))->withTimestamps();
+        return $this->belongsToMany(Permission::roleModel())->withTimestamps();
     }
 
     /**
@@ -22,7 +23,7 @@ trait UserHasRole
      */
     public function systemRoles()
     {
-        return $this->roles()->where('group', config('permission.model.ability')::GROUP_SYSTEM);
+        return $this->roles()->where('group', Permission::abilityModel()::GROUP_SYSTEM);
     }
 
     /**
@@ -32,7 +33,7 @@ trait UserHasRole
      */
     public function accountRoles()
     {
-        return $this->roles()->where('group', config('permission.model.ability')::GROUP_ACCOUNT);
+        return $this->roles()->where('group', Permission::abilityModel()::GROUP_ACCOUNT);
     }
 
     /**
@@ -42,7 +43,7 @@ trait UserHasRole
      */
     public function abilitables()
     {
-        return $this->morphToMany(config('permission.model.ability'), 'abilitable')->withTimestamps()->withPivot('level');
+        return $this->morphToMany(Permission::abilityModel(), 'abilitable')->withTimestamps()->withPivot('level');
     }
 
     /**
@@ -74,7 +75,7 @@ trait UserHasRole
     public function assignRole($role)
     {
         if (is_string($role)) {
-            $role = config('permission.model.role')::whereName($role)->firstOrFail();
+            $role = Permission::roleModel()::whereName($role)->firstOrFail();
         }
 
         $this->roles()->sync($role, false);
@@ -87,7 +88,7 @@ trait UserHasRole
      */
     public function isSuperAdmin()
     {
-        return $this->hasRole(config('permission.role.superAdmin'));
+        return $this->hasRole(Permission::superAdminRole());
     }
 
     /**
@@ -97,7 +98,7 @@ trait UserHasRole
      */
     public function isSystemUser()
     {
-        return $this->roles->pluck('group')->contains(config('permission.model.ability')::GROUP_SYSTEM);
+        return $this->roles->pluck('group')->contains(Permission::abilityModel()::GROUP_SYSTEM);
     }
 
     /**
@@ -107,7 +108,7 @@ trait UserHasRole
      */
     public function isAccountUser()
     {
-        return $this->roles->pluck('group')->contains(config('permission.model.ability')::GROUP_ACCOUNT);
+        return $this->roles->pluck('group')->contains(Permission::abilityModel()::GROUP_ACCOUNT);
     }
 
     /**
@@ -176,7 +177,7 @@ trait UserHasRole
      */
     protected function accountLevelPermission($model, $level)
     {
-        return $level == config('permission.model.ability')::LEVEL_ACCOUNT
+        return $level == Permission::abilityModel()::LEVEL_ACCOUNT
             ? $this->isAccountOwner($model)
             : $this->isOwner($model);
     }
@@ -187,7 +188,7 @@ trait UserHasRole
      * @return boolean
      */
     protected function isOwner($model){
-        $user_id = Str::of(config('permission.model.user'))->append('_id');
+        $user_id = Str::of(Permission::userModel())->append('_id');
 
         return $model->{$user_id} = $this->id;
     }
@@ -198,7 +199,7 @@ trait UserHasRole
      * @return boolean
      */
     protected function isAccountOwner($model){
-        $account_id = Str::of(config('permission.model.account'))->append('_id');
+        $account_id = Str::of(Permission::accountModel())->append('_id');
 
         return $model->owner->{$account_id} = $this->{$account_id};
     }
