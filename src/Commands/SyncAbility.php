@@ -2,13 +2,11 @@
 
 namespace Rkj\Permission\Commands;
 
-use Rkj\Permission\Models\Ability;
-
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use Rkj\Permission\Facades\Permission;
 
 class SyncAbility extends Command
 {
@@ -71,7 +69,7 @@ class SyncAbility extends Command
     {
         Schema::disableForeignKeyConstraints();
 
-        config('permission.model.ability')::truncate();
+        Permission::abilityModel()::truncate();
 
         Schema::enableForeignKeyConstraints();
     }

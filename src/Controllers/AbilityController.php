@@ -54,6 +54,33 @@ class AbilityController extends Controller
     }
 
     /**
+     * List permission based on roles
+     *
+     * @param [type] $roleId
+     * @return void
+     */
+    public function roleAbilities($roleId)
+    {
+        $perPage = request('perPage', config('permission.itemPerPage'));
+
+        $role = Permission::roleModel()::findOrFail($roleId);
+
+        $abilities = Permission::abilityModel()::with(['roles' => function ($query) use ($roleId) {
+            $query->where('id', $roleId);
+        }])->where('group', $role->group)->paginate($perPage);
+
+        $data = [
+            'items' => $abilities,
+            'roleGroups' => Permission::abilityModel()::roleGroups(),
+            'permissionLevels' => Permission::abilityModel()::permissionLevels(),
+            'roles' => Permission::roleModel()::noSuperAdmin()->get(),
+            'selectedRole' => $role
+        ];
+
+        return view('permission::permissions', $data);
+    }
+
+    /**
      * Update ability partials
      *
      * @param int $id
@@ -66,31 +93,6 @@ class AbilityController extends Controller
         Permission::abilityModel()::update($params, $id);
 
         return response()->json();
-    }
-
-    /**
-     * List permission based on roles
-     *
-     * @param [type] $roleId
-     * @return void
-     */
-    public function roleAbilities($roleId)
-    {
-        $perPage = request('perPage', config('permission.itemPerPage'));
-
-        $abilities = Permission::abilityModel()::with(['roles' => function ($query) use ($roleId) {
-            $query->where('id', $roleId);
-        }])->paginate($perPage);
-
-        $data = [
-            'items' => $abilities,
-            'roleGroups' => Permission::abilityModel()::roleGroups(),
-            'permissionLevels' => Permission::abilityModel()::permissionLevels(),
-            'roles' => Permission::roleModel()::noSuperAdmin()->get(),
-            'selectedRoleId' => $roleId
-        ];
-
-        return view('permission::index', $data);
     }
 
     /**

@@ -5,48 +5,51 @@
 @endsection
 
 @section('content')
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-12">
-                <table class="table">
-                    <tr>
-                        <th>Label</th>
-                        <th>Name</th>
-                        <th>Group</th>
-                        <th>Total Users</th> 
-                        <th>Action</th> 
-                    </tr>
-                    @forelse ($items as $role)
-                        <tr>
-                            <td>{{ $role->label }}</td>
-                            <td>{{ $role->name }}</td>
-                            <td> <label class="btn btn-sm {{ $role->group == 1 ? 'btn-danger' : 'btn-primary' }}">{{ $roleGroups[$role->group] ?? '-' }}</label></td>
-                            <td>{{ $role->users()->count() }}</td>
-                            <td>
-                                @if(!$role->isSuperAdmin())
-                                    <a href="{{ route('permission.roleAbilities', $role->id) }}" class="btn btn-info"><i class='fa fa-lock'></i></a>
-                                @else
-                                    --
-                                @endif
-                            </td>
-                        </tr>
-                    @empty 
-                        <tr><td colspan="5">No Roles found</td></tr>
-                    @endforelse
-                </table>
-            </div>
+    <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h5>Roles</h5>
         </div>
-        
-        @if ($items->hasPages())
-            <div class="row">
-                <div class="col-sm-12 col-md-6">
-                    <span class="text">Showing {{ $items->firstItem() }}  to {{ $items->lastItem() }} of {{ $items->total() }} entries</span>
-                </div>
-                <div class="col-sm-12 col-md-6 float-right">
-                        {!! $links ?? '' !!}
-                </div>
-            </div>
-        @endif
+        <table class="table table-hover table-sm mb-0 penultimate-column-right">
+            <thead>
+                <tr>
+                    <th scope="col" class="table-fit">Label</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Group</th>
+                    <th scope="col" class="table-fit">Total Users</th> 
+                    <th scope="col">Action</th> 
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($items as $role)
+                    <tr>
+                        <td class="table-fit">{{ $role->label }}</td>
+                        <td>{{ $role->name }}</td>
+                        <td> <label class="badge font-weight-light {{ $role->group == 1 ? 'badge-danger' : 'badge-primary' }}">{{ $roleGroups[$role->group] ?? '-' }}</label></td>
+                        <td class="table-fit">{{ $role->users()->count() }}</td>
+                        <td>
+                            @if(!$role->isSuperAdmin())
+                                <a href="{{ route('permission.roleAbilities', $role->id) }}" class="badge"><i class='fas fa-lock fa-lg fa-fw'></i></a>
+                            @else
+                                --
+                            @endif
+                        </td>
+                    </tr>
+                @empty 
+                    <tr><td colspan="5">No Roles found</td></tr>
+                @endforelse
+            </tbody>
+            @if ($items->hasPages())
+                <tfoot>
+                    <tr>
+                        <th colspan="2">
+                            <span class="text pull-right">Showing {{ $items->firstItem() }}  to {{ $items->lastItem() }} of {{ $items->total() }} entries</span>
+                        </th>
+                        <th colspan="3">
+                            {!! $items->links() ?? '' !!}
+                        </th>
+                    </tr>
+                </tfoot>
+            @endif
+        </table>
     </div>
 @endsection
