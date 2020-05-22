@@ -40,17 +40,17 @@ class SyncAbility extends Command
 
             $middlewares = $route->gatherMiddleware();
 
-            $group = (Str::of($route->getPrefix())->ltrim('/') == 'admin') 
+            $group = (Str::of($route->getPrefix())->ltrim('/') == config('permission.adminPrefix')) 
                         ? config('permission.model.ability')::GROUP_SYSTEM 
                         : config('permission.model.ability')::GROUP_ACCOUNT;
 
             if (in_array('auth', $middlewares) && !empty($name)) {
                 
-                config('permission.model.ability')::updateOrCreate(
+                Permission::abilityModel()::updateOrCreate(
                     ['name' => $name], 
                     [
                         'name' => $name,
-                        'label' => Str::of($name)->replace(['.', ':'], ' ')->title(),
+                        'label' => Str::of($name)->snake()->replace(['.', ':', '_'], ' ')->title(),
                         'group' => $group
                     ]
                 );

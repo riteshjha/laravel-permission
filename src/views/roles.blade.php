@@ -12,9 +12,9 @@
         <table class="table table-hover table-sm mb-0 penultimate-column-right">
             <thead>
                 <tr>
-                    <th scope="col" class="table-fit">Label</th>
+                    <th scope="col" class="table-fit">Group</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Group</th>
+                    <th scope="col">Label</th>
                     <th scope="col" class="table-fit">Total Users</th> 
                     <th scope="col">Action</th> 
                 </tr>
@@ -22,9 +22,9 @@
             <tbody>
                 @forelse ($items as $role)
                     <tr>
-                        <td class="table-fit">{{ $role->label }}</td>
+                        <td><label class="badge font-weight-light {{ $role->group == 1 ? 'badge-danger' : 'badge-primary' }}">{{ $roleGroups[$role->group] ?? '-' }}</label></td>
                         <td>{{ $role->name }}</td>
-                        <td> <label class="badge font-weight-light {{ $role->group == 1 ? 'badge-danger' : 'badge-primary' }}">{{ $roleGroups[$role->group] ?? '-' }}</label></td>
+                        <td>{{ $role->label }}</td>
                         <td class="table-fit">{{ $role->users()->count() }}</td>
                         <td>
                             @if(!$role->isSuperAdmin())

@@ -100,7 +100,7 @@ class AbilityController extends Controller
      */
     public function updateRoleAbility($roleId)
     {
-        $role = Permission::roleModel()::findOrFail($roleId);
+        $role = Permission::roleModel()::noSuperAdmin()->findOrFail($roleId);
 
         $data = [
             'abilities' => array_keys(request('permissions')),

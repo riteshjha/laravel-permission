@@ -19,5 +19,7 @@ return [
         'superAdmin' => 'superadmin', //specify role name which has all permissions
     ],
 
+    'adminPrefix' => 'admin',
+
     'itemPerPage' => 15
 ];
