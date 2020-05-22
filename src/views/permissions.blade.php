@@ -12,7 +12,7 @@
     <div class="card">
         <div class="card-header d-flex align-items-center justify-content-between">
             <h5>Permissions</h5>
-            <select id="roles" class="form-control w-25">
+            <select id="roles" class="form-control w-15">
                 @foreach ($roles as $role)
                     <option {{ $selectedRole->id == $role->id ? 'selected' : ''}} value="{{ $role->id }}">{{ $role->label ?? $role->name }}</option>
                 @endforeach

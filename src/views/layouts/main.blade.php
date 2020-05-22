@@ -15,7 +15,8 @@
     <body>
         <div class="container mb-5">
             <div class="d-flex align-items-center py-4 header">
-                <h4 class="mb-0 ml-3"><strong>Permission</strong> - {{ config('app.name', 'Laravel') }}</h4>
+                <i class="fas fa-house-user fa-lg" style="color:#4040c8"></i>
+                <h4 class="mb-0 ml-2"><strong>Permission</strong> - {{ config('app.name', 'Laravel') }}</h4>
                 @yield('topButtons')
             </div>
             <div class="row mt-4">
