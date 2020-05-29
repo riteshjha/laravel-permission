@@ -127,10 +127,8 @@ class PermissionServiceProvider extends ServiceProvider
      */
     protected function bootCommands()
     {
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                SyncAbility::class,
-            ]);
-        }    
+        $this->commands([
+            SyncAbility::class,
+        ]);
     }
 }

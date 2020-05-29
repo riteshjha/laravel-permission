@@ -114,7 +114,7 @@ trait UserHasRole
     /**
      * Fetch the user's abilities.
      *
-     * @return array
+     * @return Illuminate\Support\Collection
      */
     public function abilities()
     {
@@ -160,8 +160,8 @@ trait UserHasRole
      *
      * @param boolean $result
      * @param string $ability
-     * @param App\Models\Model $model
-     * @return void
+     * @param Illuminate\Database\Eloquent\Model $model
+     * @return boolean
      */
     protected function afterAccess($result, $ability, $model = null)
     {
@@ -171,9 +171,9 @@ trait UserHasRole
     /**
      * Check Acount level permission
      *
-     * @param App\Models\Model $model
+     * @param Illuminate\Database\Eloquent\Model $model
      * @param int $level
-     * @return void
+     * @return boolean
      */
     protected function accountLevelPermission($model, $level)
     {

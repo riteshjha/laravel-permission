@@ -58,17 +58,19 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('vendor/permission/js/x-editable/bootstrap-editable.min.js') }}"></script>
+    <script src="{{ asset('vendor/permission/js/x-editable/bootstrap-editable.min.js') }}" type="text/javascript"></script>
     <script>
         $(document).ready(function() {
-            //$('.editable').editable();
+            $('.editable').editable();
         });
 
         function syncAbility(){
-            $('#sync').text('Loading...').attr('disabled', true);
+            $('#sync').html('<i class="fas fa-sync fa-spin"></i>').attr('disabled', true);
 
             $.get('{{ route("permission.syncAbilities") }}', function(response){
                 window.location.reload(true);
+            }).always(function() {
+                $('#sync').removeAttr('disabled').html('<i class="fas fa-sync"></i>');
             });
         }
     </script>

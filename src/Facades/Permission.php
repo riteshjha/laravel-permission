@@ -72,7 +72,7 @@ class Permission extends Facade
      *
      * @return void
      */
-    public static function adminRoutes()
+    public static function routes()
     {
         $namespace = '\Rkj\Permission\Controllers\\';
 

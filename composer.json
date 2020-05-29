@@ -10,5 +10,15 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {}
+    "require": {},
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Rkj\\Permission\\PermissionServiceProvider"
+            ],
+            "aliases": {
+                "Permission": "Rkj\\Permission\\Facades\\Permission"
+            }
+        }
+    },
 }

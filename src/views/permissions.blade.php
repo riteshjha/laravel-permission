@@ -5,7 +5,7 @@
 @endsection
 
 @section('topButtons')
-    <button type="button" class="btn btn-outline-primary ml-auto" id="updatePermission"><i class="fas fa-sync"></i> Update</button>
+    <button type="button" class="btn btn-outline-primary ml-auto" id="updatePermission"><i class="fas fa-edit"></i></button>
 @endsection
 
 @section('content')
@@ -23,7 +23,7 @@
                 <tr>
                     <th scope="col" class="table-fit">Group</th>
                     <th scope="col">Ability</th>
-                    <th scope="col" class="table-fit">Permission</th> 
+                    <th scope="col" class="w-15">Permission</th> 
                 </tr>
             </thead>
             <form id="permissionsListForm">
@@ -78,13 +78,13 @@
             $('#updatePermission').on('click', function(){
                 let self = this;
 
-                $(this).text('Loading...').attr('disabled', true);
+                $(this).html('<i class="fas fa-sync fa-spin"></i>').attr('disabled', true);
 
                 $.post('{{ route("permission.updateRoleAbility", $selectedRole->id) }}',$('#permissionsListForm').serialize(),  function(response){
                 }, 'json').fail(function(response) {
                     alert( "error" );
                 }).always(function() {
-                    $(self).removeAttr('disabled').html('<i class="fas fa-sync"></i> Update');
+                    $(self).removeAttr('disabled').html('<i class="fas fa-edit"></i>');
                 });
             });
         });

@@ -90,7 +90,7 @@ class AbilityController extends Controller
     {
         $params[request('name')] = request('value');
 
-        Permission::abilityModel()::update($params, $id);
+        Permission::abilityModel()::where('id', $id)->update($params);
 
         return response()->json();
     }
