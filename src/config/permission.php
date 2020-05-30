@@ -19,7 +19,7 @@ return [
         'superAdmin' => 'superadmin', //specify role name which has all permissions
     ],
 
-    'adminPrefix' => 'admin',
+    'adminPrefix' => 'admin', //prefix used for admin routes
 
     'itemPerPage' => 15
 ];
