@@ -1,5 +1,5 @@
 # Laravel Permission (Account and Owner Level Check)
-This package allows you to manage user permissions in a database using role and direct user based permission with Account (Organization) level and owner level permission check.
+This package allows you to manage user permissions in a database using role and direct user based permission with Account (Organization) level and owner level permission check. It handle 2 types of abilities (route ability and field ability).
 
 ## Installation
 
@@ -53,13 +53,11 @@ This package allows you to manage user permissions in a database using role and 
 
 Package handle 2 types of ability (route ability and field ability). Package parse Auth route (route which has auth middleware) and store route name as a Route Ability. For field ability, you have to define it in your model like this:
 
-    ```
     class Project extends Model
     {
         protected $fieldAbility = ['cost', 'estimated_cost'] ; //list projects table fields on which you want to apply permission
     }
-    ```
-
+    
 ## Role and Ability Group
 
 Role and Ability is divided in 2 groups (SYSTEM and ACCOUNT). All admin users that mange admin tasks will under SYSTEM group role.
@@ -70,12 +68,10 @@ interface will be under SYSTEM group and all ability which is used for front-end
 
 There is an admin interface with routes and views for handling ability and permissions. You have to add package routes in your admin route group.
 
-    ```
     Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
         Permission::routes();
     });
-    ```
-
+        
 Now you can access permission interface via ```admin/permission/roles``` routes
 
 Note: If you use admin routes prefix other than 'admin' then change ```adminPrefix``` value in ```config/permission.php```
@@ -84,6 +80,8 @@ Note: If you use admin routes prefix other than 'admin' then change ```adminPref
 
 Package use laravel gate, so you can use ``` can('project.create') ``` in view and ``` $this->authorize('project.create') ``` in controller for route ability. And ``` can('projects::cost') ``` for field ability in view. Here projects is a table name.
 
-# Create/Update
+#### Create/Update
 
-When creating or updating record in model then filter data using ``` Project::filterFieldAccess($data) ``` before save
+When creating or updating record in model then filter data using ``` filterFieldAccess ``` method like :
+
+    $data = Project::filterFieldAccess($data)
