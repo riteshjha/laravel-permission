@@ -72,7 +72,7 @@
     <script>
         $(document).ready(function(){
             $('#roles').on('change', function() {
-                window.location.href="/permission/roles/" + this.value + '/abilities';
+                window.location.href= '/{{ config('permission.adminPrefix')}}/' + "permission/roles/" + this.value + '/abilities';
             });
 
             $('#updatePermission').on('click', function(){

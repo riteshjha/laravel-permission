@@ -38,7 +38,7 @@ class AbilityController extends Controller
     }
 
     /**
-     * List users
+     * List abilities
      *
      * @param UserRepository $userRepository
      * @return void
