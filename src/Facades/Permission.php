@@ -4,6 +4,7 @@ namespace Rkj\Permission\Facades;
 
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 class Permission extends Facade
 {
@@ -24,7 +25,7 @@ class Permission extends Facade
      */
     public static function userModel()
     {
-        return config('permission.model.user');
+        return config('permission.namespace') . '\\' . config('permission.model.user');
     }
 
     /**
@@ -34,7 +35,7 @@ class Permission extends Facade
      */
     public static function roleModel()
     {
-        return config('permission.model.role');
+        return config('permission.namespace') . '\\' . config('permission.model.role');
     }
 
     /**
@@ -44,7 +45,11 @@ class Permission extends Facade
      */
     public static function abilityModel()
     {
-        return config('permission.model.ability');
+        $abilityModelName = config('permission.model.ability');
+
+        return  Str::of($abilityModelName)->contains('Rkj')
+                ? $abilityModelName
+                : config('permission.namespace') . '\\' . $abilityModelName;
     }
 
     /**
@@ -54,7 +59,7 @@ class Permission extends Facade
      */
     public static function accountModel()
     {
-        return config('permission.model.account');
+        return config('permission.namespace') . '\\' . config('permission.model.account');
     }
 
     /**

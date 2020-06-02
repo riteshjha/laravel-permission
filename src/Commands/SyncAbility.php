@@ -31,7 +31,7 @@ class SyncAbility extends Command
      */
     public function handle()
     {
-        echo "Processing ability \n";
+        echo "Processing Route ability... \n";
 
         if ($this->option('fresh')) $this->truncateAbility();
 
@@ -45,19 +45,50 @@ class SyncAbility extends Command
                         : config('permission.model.ability')::GROUP_ACCOUNT;
 
             if (in_array('auth', $middlewares) && !empty($name)) {
-                
-                Permission::abilityModel()::updateOrCreate(
-                    ['name' => $name], 
-                    [
-                        'name' => $name,
-                        'label' => Str::of($name)->snake()->replace(['.', ':', '_'], ' ')->title(),
-                        'group' => $group
-                    ]
-                );
+                $this->updateOrCreateAbility($name, $group);
             }
         }
 
+        echo "Processing Field ability... \n";
+
+        $modelNamespace = config('permission.model.namespace');
+
+        collect(glob(base_path($modelNamespace . '/*.php')))->map(function ($filename) use ($modelNamespace) {
+
+            $modelWithNamespace = $modelNamespace . '\\' . basename($filename, '.php');
+          
+            if(in_array('Rkj\Permission\Contracts\Permissionable', class_implements($modelWithNamespace))){
+
+                $fields = (new $modelWithNamespace)->fieldAvilities();
+
+                foreach($fields as $field){
+                    $group = config('permission.model.ability')::GROUP_ACCOUNT;
+
+                    $this->updateOrCreateAbility($field, $group);
+                }
+            }
+        });
+
         echo "Done\n";
+    }
+
+    /**
+     * Create ability
+     *
+     * @param string $name
+     * @param int $group
+     * @return void
+     */
+    protected function updateOrCreateAbility($name, $group)
+    {
+        Permission::abilityModel()::updateOrCreate(
+            ['name' => $name], 
+            [
+                'name' => $name,
+                'label' => Str::of($name)->snake()->replace(['.', ':', '_'], ' ')->title(),
+                'group' => $group
+            ]
+        );
     }
 
     /**

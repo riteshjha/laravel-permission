@@ -47,34 +47,43 @@ This package allows you to manage user permissions in a database using role and 
 
 2. Add ```UserHasRole``` trait to your User model and ```RoleHasAbility``` to Role model.
 
-3. Each model in your application must have ```owner``` relationship except User and Role model
+3. All model that you want to include in permission should implements ``` Permissionable ``` interface and add ``` HasPermission ``` trait.
+
+## Ability
+
+Package handle 2 types of ability (route ability and field ability). Package parse Auth route (route which has auth middleware) and store route name as a Route Ability. For field ability, you have to define it in your model like this:
 
     ```
-    public function owner(){
-        return $this->belongsTo(User::class); //assuming user_id as a foreign key, if not add second parameter in relation
+    class Project extends Model
+    {
+        protected $fieldAbility = ['cost', 'estimated_cost'] ; //list projects table fields on which you want to apply permission
     }
     ```
 
-    In Account model there should be a hasOne relation or it depends on your application organization handling
+## Role and Ability Group
 
-    ```
-    public function owner(){
-        return $this->hasOne(User::class)->oldest(); //assuming account_id is the foreign key in user table and the oldest user is the owner of an account
-    }
-    ```
+Role and Ability is divided in 2 groups (SYSTEM and ACCOUNT). All admin users that mange admin tasks will under SYSTEM group role.
+All users that signup or login as front end user will under ACCOUNT group. Similarly All ability (route name) which is used for admin
+interface will be under SYSTEM group and all ability which is used for front-end will be under ACCOUNT group.
 
 ## Admin Interface
 
 There is an admin interface with routes and views for handling ability and permissions. You have to add package routes in your admin route group.
 
-```
+    ```
     Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
         Permission::routes();
     });
-```
+    ```
 
 Now you can access permission interface via ```admin/permission/roles``` routes
 
 Note: If you use admin routes prefix other than 'admin' then change ```adminPrefix``` value in ```config/permission.php```
 
+## Usage
 
+Package use laravel gate, so you can use ``` can('project.create') ``` in view and ``` $this->authorize('project.create') ``` in controller for route ability. And ``` can('projects::cost') ``` for field ability in view. Here projects is a table name.
+
+# Create/Update
+
+When creating or updating record in model then filter data using ``` Project::filterFieldAccess($data) ``` before save

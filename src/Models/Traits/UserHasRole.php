@@ -188,9 +188,9 @@ trait UserHasRole
      * @return boolean
      */
     protected function isOwner($model){
-        $user_id = Str::of(Permission::userModel())->append('_id');
+        $userId = Str::of(Permission::userModel())->append('_id');
 
-        return $model->{$user_id} = $this->id;
+        return $model->{$userId} = $this->id;
     }
 
     /**
@@ -199,8 +199,8 @@ trait UserHasRole
      * @return boolean
      */
     protected function isAccountOwner($model){
-        $account_id = Str::of(Permission::accountModel())->append('_id');
+        $accountId = Str::of(Permission::accountModel())->append('_id');
 
-        return $model->owner->{$account_id} = $this->{$account_id};
+        return $model->owner->{$accountId} = $this->{$accountId};
     }
 }

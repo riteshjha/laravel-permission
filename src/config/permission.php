@@ -5,14 +5,16 @@ return [
     // set permission level ('account' or 'owner') when you select account level then be sure you have account model 
     'level' => 'owner', 
 
-    'model' => [
-        'user' => "App\User", //user model namespace
+    'model' => [      
+        'namespace' => 'App',
 
-        'role' => "App\Role", //role model namespace
+        'user' => "User", //user model
+
+        'role' => "Role", //role model
 
         'ability' => "Rkj\Permission\Models\Ability", //Ability model that contain abilities
 
-        'account' => "App\Account"  //account model namespace, if using account level check
+        'account' => "Account"  //account model, if using account level check
     ],
 
     'role' => [
