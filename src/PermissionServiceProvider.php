@@ -5,9 +5,9 @@ namespace Rkj\Permission;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
-use Rkj\Permission\Commands\SyncAbility;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
+use Rkj\Permission\Commands\RecordAbility;
 
 class PermissionServiceProvider extends ServiceProvider
 {
@@ -131,7 +131,7 @@ class PermissionServiceProvider extends ServiceProvider
     protected function bootCommands()
     {
         $this->commands([
-            SyncAbility::class,
+            RecordAbility::class,
         ]);
     }
 

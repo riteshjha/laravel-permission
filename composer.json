@@ -10,7 +10,10 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {},
+    "require": {
+        "php": "^7.2.5",
+        "laravel/framework": "^7.0"
+    },
     "extra": {
         "laravel": {
             "providers": [
@@ -20,5 +23,9 @@
                 "Permission": "Rkj\\Permission\\Facades\\Permission"
             }
         }
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0@dev",
+        "phpunit/phpunit": "^9.3@dev"
     }
 }

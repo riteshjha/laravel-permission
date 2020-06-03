@@ -31,7 +31,7 @@ class AbilityController extends Controller
      */
     public function sync()
     {
-        Artisan::call('ability:sync');
+        Artisan::call('ability:record');
 
         return '';
     }

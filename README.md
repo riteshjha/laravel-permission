@@ -64,6 +64,10 @@ Role and Ability is divided in 2 groups (SYSTEM and ACCOUNT). All admin users th
 All users that signup or login as front end user will under ACCOUNT group. Similarly All ability (route name) which is used for admin
 interface will be under SYSTEM group and all ability which is used for front-end will be under ACCOUNT group. To disable it change ``` disableAbilityGroup ```  to true in config.
 
+## Sync Ability
+
+    php artisan ability:record  // if need fresh then add --fresh
+
 ## Admin Interface
 
 There is an admin interface with routes and views for handling ability and permissions. You have to add package routes in your admin route group.

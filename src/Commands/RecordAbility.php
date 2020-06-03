@@ -8,14 +8,14 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Rkj\Permission\Facades\Permission;
 
-class SyncAbility extends Command
+class RecordAbility extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'ability:sync {--fresh}';
+    protected $signature = 'ability:record {--fresh}';
 
     /**
      * The console command description.
