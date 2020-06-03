@@ -18,16 +18,6 @@ class PermissionServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
-    }
-
-    /**
-     * Bootstrap services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
         $this->bootCommands();
 
         $this->loadViewsFrom($this->getViewPath(), 'permission');
@@ -39,7 +29,15 @@ class PermissionServiceProvider extends ServiceProvider
         $this->publishViews();
 
         $this->publishAssets();
+    }
 
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
         Gate::before(function ($user, $ability, $params) {
             if ($user->isSuperAdmin() || $user->hasAccess($ability, $params)) {
                 return true;

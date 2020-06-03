@@ -62,7 +62,7 @@ Package handle 2 types of ability (route ability and field ability). Package par
 
 Role and Ability is divided in 2 groups (SYSTEM and ACCOUNT). All admin users that mange admin tasks will under SYSTEM group role.
 All users that signup or login as front end user will under ACCOUNT group. Similarly All ability (route name) which is used for admin
-interface will be under SYSTEM group and all ability which is used for front-end will be under ACCOUNT group.
+interface will be under SYSTEM group and all ability which is used for front-end will be under ACCOUNT group. To disable it change ``` disableAbilityGroup ```  to true in config.
 
 ## Admin Interface
 
