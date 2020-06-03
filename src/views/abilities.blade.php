@@ -28,7 +28,7 @@
                         <?php $roles = $ability->roles()->wherePivot('level','<>', 0)->get() ?>
                         <td><label class="badge font-weight-light {{ $ability->group == 1 ? 'badge-danger' : 'badge-primary' }}">{{ $roleGroups[$ability->group] ?? '-' }}</label></td>
                         <td>{{ $ability->name }}</td>
-                        <td><a href="#" class="editable" id="label" data-type="text" data-pk="{{ $ability->id }}" data-url="{{ route('permission.updateAbility', ['id' => $ability->id]) }}" data-title="Enter Label">
+                        <td><a href="javascript:void(0)" class="editable" id="label" data-type="text" data-pk="{{ $ability->id }}" data-url="{{ route('permission.updateAbility', ['id' => $ability->id]) }}" data-title="Enter Label">
                             {{ $ability->label ?? '--' }}</a>
                         </td>
                         <td>{{ ($roles->count() > 0) ? $roles->implode('name', ',') : '--' }}</td>
