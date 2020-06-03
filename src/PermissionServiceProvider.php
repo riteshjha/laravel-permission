@@ -2,9 +2,12 @@
 
 namespace Rkj\Permission;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Rkj\Permission\Commands\SyncAbility;
+use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 
 class PermissionServiceProvider extends ServiceProvider
 {
@@ -42,6 +45,8 @@ class PermissionServiceProvider extends ServiceProvider
                 return true;
             }
         });
+
+        $this->searchMacro();
     }
 
     /**
@@ -130,5 +135,36 @@ class PermissionServiceProvider extends ServiceProvider
         $this->commands([
             SyncAbility::class,
         ]);
+    }
+
+    /**
+     * Micro for search using builder
+     *
+     * @return void
+     */
+    protected function searchMacro()
+    {
+        //Search micro
+        Builder::macro('search', function ($attributes, string $searchTerm) {
+            $this->where(function (Builder $query) use ($attributes, $searchTerm) {
+                foreach (Arr::wrap($attributes) as $attribute) {
+                    $query->when(
+                        Str::contains($attribute, '.'),
+                        function (Builder $query) use ($attribute, $searchTerm) {
+                            [$relationName, $relationAttribute] = explode('.', $attribute);
+
+                            $query->orWhereHas($relationName, function (Builder $query) use ($relationAttribute, $searchTerm) {
+                                $query->where($relationAttribute, 'LIKE', "%{$searchTerm}%");
+                            });
+                        },
+                        function (Builder $query) use ($attribute, $searchTerm) {
+                            $query->orWhere($attribute, 'LIKE', "%{$searchTerm}%");
+                        }
+                    );
+                }
+            });
+
+            return $this;
+        });
     }
 }

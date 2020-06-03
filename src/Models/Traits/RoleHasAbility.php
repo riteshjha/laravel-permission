@@ -18,7 +18,7 @@ trait RoleHasAbility
     /**
      * Get all Role abilities
      *
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function abilitables()
     {
@@ -28,7 +28,7 @@ trait RoleHasAbility
     /**
      * No SuperAdmin scope filter
      *
-     * @param [type] $query
+     * @param Builder $query
      * @return void
      */
     public function scopeNoSuperAdmin($query)

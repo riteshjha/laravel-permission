@@ -5,10 +5,25 @@ namespace Rkj\Permission\Controllers;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\View;
 use Rkj\Permission\Facades\Permission;
 
 class AbilityController extends Controller
 {
+    protected $searchKey = 'search';
+
+    /**
+     * Construct base controller
+     */
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            View::share('searchKey', $this->searchKey);
+
+            return $next($request);
+        });
+    }
+
     /**
      * Sync Ability
      *
@@ -45,8 +60,16 @@ class AbilityController extends Controller
      */
     public function index()
     {
+        $query = Permission::abilityModel()::with('roles');
+
+        $searchKey = request($this->searchKey, false);
+
+        if($searchKey){
+            $query->search(['name', 'label'], $searchKey);
+        }
+
         $data = [
-            'items' => Permission::abilityModel()::with('roles')->paginate(config('permission.itemPerPage')),
+            'items' => $query->paginate(config('permission.itemPerPage')),
             'roleGroups' => Permission::abilityModel()::roleGroups()
         ];
 
@@ -61,16 +84,10 @@ class AbilityController extends Controller
      */
     public function roleAbilities($roleId)
     {
-        $perPage = request('perPage', config('permission.itemPerPage'));
-
         $role = Permission::roleModel()::findOrFail($roleId);
 
-        $abilities = Permission::abilityModel()::with(['roles' => function ($query) use ($roleId) {
-            $query->where('id', $roleId);
-        }])->where('group', $role->group)->paginate($perPage);
-
         $data = [
-            'items' => $abilities,
+            'items' => $this->fetchRoleAbilities($role),
             'roleGroups' => Permission::abilityModel()::roleGroups(),
             'permissionLevels' => Permission::abilityModel()::permissionLevels(),
             'roles' => Permission::roleModel()::noSuperAdmin()->get(),
@@ -97,6 +114,8 @@ class AbilityController extends Controller
 
     /**
      * Update role permission
+     * 
+     * @param int $roleId
      */
     public function updateRoleAbility($roleId)
     {
@@ -132,5 +151,31 @@ class AbilityController extends Controller
             "permissions"    => "required|array",
             'permissions.*.level' => 'required|in:0,1,2',
         ]);
+    }
+
+    /**
+     * Fetch role abilities
+     *
+     * @param Illuminate\Database\Eloquent\Model $role
+     * @return void
+     */
+    protected function fetchRoleAbilities($role)
+    {
+        $searchKey = request($this->searchKey, false);
+
+        $perPage = request('perPage', config('permission.itemPerPage'));
+
+        $query = Permission::abilityModel()::with(['roles' => function ($query) use ($role) {
+            $query->where('id', $role->id);
+        }]);
+        
+        if($searchKey){
+            $query->search(['name', 'label'], $searchKey);
+        }
+
+        return  config('permission.disableAbilityGroup') 
+                ? $query->paginate($perPage)
+                : $query->where('group', $role->group)->paginate($perPage);
+        
     }
 }

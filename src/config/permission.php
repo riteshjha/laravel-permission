@@ -5,6 +5,8 @@ return [
     // set permission level ('account' or 'owner') when you select account level then be sure you have account model 
     'level' => 'owner', 
 
+    'disableAbilityGroup' => false,
+
     'model' => [      
         'namespace' => 'App',
 

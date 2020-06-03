@@ -17,6 +17,9 @@
                     <option {{ $selectedRole->id == $role->id ? 'selected' : ''}} value="{{ $role->id }}">{{ $role->label ?? $role->name }}</option>
                 @endforeach
             </select>
+            <form>
+                <input class="form-control" type="search" name="{{ $searchKey }}" value="{{ request($searchKey, '') }}" placeholder="Search" aria-label="Search">
+            </form>
         </div>
         <table class="table table-hover table-sm mb-0 penultimate-column-right">
             <thead>

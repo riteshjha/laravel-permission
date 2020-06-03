@@ -12,6 +12,9 @@
     <div class="card">
         <div class="card-header d-flex align-items-center justify-content-between">
             <h5>Abilities</h5>
+            <form>
+                <input class="form-control" type="search" name="{{ $searchKey }}" value="{{ request($searchKey, '') }}" placeholder="Search" aria-label="Search">
+            </form>
         </div>
         <table class="table table-hover table-sm mb-0 penultimate-column-right">
             <thead>

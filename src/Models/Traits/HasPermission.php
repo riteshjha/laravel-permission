@@ -12,7 +12,7 @@ trait HasPermission
     /**
      * Owner relation of this model 
      *
-     * @return /Illuminate/Eloquent/Database/Model
+     * @return mix
      */
     public function owner()
     {

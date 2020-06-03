@@ -19,7 +19,7 @@ trait UserHasRole
     /**
      * Systems roles
      *
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function systemRoles()
     {
@@ -29,7 +29,7 @@ trait UserHasRole
     /**
      * Systems roles
      *
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function accountRoles()
     {
@@ -39,7 +39,7 @@ trait UserHasRole
     /**
      * Get all User abilities
      *
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function abilitables()
     {
