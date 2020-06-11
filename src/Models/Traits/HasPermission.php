@@ -70,6 +70,27 @@ trait HasPermission
     }
 
     /**
+     * Default model level permision
+     *
+     * @param User $authUser
+     * @param string $ability
+     * @param int $level
+     * @return boolean
+     */
+    public function hasPermission($authUser, $ability, $level)
+    {
+        $result = false;
+
+        if (config('permission.level') == 'account') {
+            $result = $this->accountLevelPermission($authUser, $ability, $level);
+        }else {
+            $result = $this->isOwner($authUser, $ability, $level);
+        }
+
+        return $result;
+    }
+
+    /**
      * Construct field ability
      *
      * @param string $field
@@ -98,5 +119,46 @@ trait HasPermission
     protected function hasColumn($column)
     {
         return Schema::hasColumn(static::table(), $column);
+    }
+
+    /**
+     * Check Acount level permission
+     *
+     * @param Illuminate\Database\Eloquent\Model $model
+     * @param int $level
+     * @return boolean
+     */
+    protected function accountLevelPermission($authUser, $ability, $level)
+    {
+        return $level == Permission::abilityModel()::LEVEL_ACCOUNT
+            ? $this->isAccountOwner($authUser)
+            : $this->isOwner($authUser);
+    }
+
+    /**
+     * Check user is an owner of model
+     * @param Illuminate\Database\Eloquent\Model  $model
+     * @return boolean
+     */
+    protected function isOwner($authUser)
+    {
+        $userId = Str::of(Permission::userModel())->append('_id');
+
+        return $this->{$userId} = $authUser->id;
+    }
+
+    /**
+     * Check user's account is an owner of model
+     * @param Illuminate\Database\Eloquent\Model  $model
+     * @return boolean
+     */
+    protected function isAccountOwner($authUser)
+    {
+
+        if(method_exists($this, 'owner')) $this->load('owner');
+
+        $accountId = Str::of(Permission::accountModel())->append('_id');
+
+        return $this->owner->{$accountId} = $authUser->{$accountId};
     }
 }

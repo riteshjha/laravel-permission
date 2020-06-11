@@ -141,15 +141,13 @@ trait UserHasRole
 
         if ($level > 0) { //$level > 0 means has permission
 
+            $result = true;
+
             $model = (count($params) > 0) ? $params[0] : null;
 
-            if (config('permission.level') == 'account' && $this->isAccountUser() && $model) {
-                $result = $this->accountLevelPermission($model, $level);
-            }else if($this->isAccountUser() && $model){
-                $result = $this->isOwner($model);
+            if (!$this->isSystemUser() && $model) {
+                $result = $model->hasPermission($this, $ability, $level);
             }
-
-            $result = true;
         }
 
         return $this->afterAccess($result, $ability, $model);
@@ -166,41 +164,5 @@ trait UserHasRole
     protected function afterAccess($result, $ability, $model = null)
     {
         return $result;
-    }
-
-    /**
-     * Check Acount level permission
-     *
-     * @param Illuminate\Database\Eloquent\Model $model
-     * @param int $level
-     * @return boolean
-     */
-    protected function accountLevelPermission($model, $level)
-    {
-        return $level == Permission::abilityModel()::LEVEL_ACCOUNT
-            ? $this->isAccountOwner($model)
-            : $this->isOwner($model);
-    }
-
-    /**
-     * Check user is an owner of model
-     * @param Illuminate\Database\Eloquent\Model  $model
-     * @return boolean
-     */
-    protected function isOwner($model){
-        $userId = Str::of(Permission::userModel())->append('_id');
-
-        return $model->{$userId} = $this->id;
-    }
-
-    /**
-     * Check user's account is an owner of model
-     * @param Illuminate\Database\Eloquent\Model  $model
-     * @return boolean
-     */
-    protected function isAccountOwner($model){
-        $accountId = Str::of(Permission::accountModel())->append('_id');
-
-        return $model->owner->{$accountId} = $this->{$accountId};
     }
 }

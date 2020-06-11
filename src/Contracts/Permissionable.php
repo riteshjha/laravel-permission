@@ -18,4 +18,14 @@ interface Permissionable
      * @return array
      */
     public function fieldAvilities();
+
+    /**
+     * Handle model level permision
+     *
+     * @param User $authUser
+     * @param string $ability
+     * @param int $level
+     * @return void
+     */
+    public function hasPermission($authUser, $ability, $level);
 }
