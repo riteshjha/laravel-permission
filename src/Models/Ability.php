@@ -4,10 +4,14 @@ namespace Rkj\Permission\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Rkj\Permission\Contracts\Permissionable;
 use Rkj\Permission\Facades\Permission;
+use Rkj\Permission\Models\Traits\HasPermission;
 
-class Ability extends Model
+class Ability extends Model implements Permissionable
 {
+    use HasPermission;
+    
     public const LEVEL_OWNER = 1;
     public const LEVEL_ACCOUNT = 2;
 
