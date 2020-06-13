@@ -17,8 +17,6 @@ class AbilityController extends Controller
 
     protected $searchKey = 'search';
 
-    protected $adminRoutePrefix = '';
-
     /**
      * Construct base controller
      */
@@ -29,18 +27,16 @@ class AbilityController extends Controller
 
             return $next($request);
         });
-
-        $this->adminRoutePrefix = config('permission.adminRoutePrefix');
     }
 
     /**
-     * Sync Ability
+     * Record Ability
      *
      * @return void
      */
-    public function sync()
+    public function record()
     {
-        $this->authorize($this->adminRoutePrefix . '.permission.syncAbilities');
+        $this->authorize('permission.recordAbilities');
 
         Artisan::call('ability:record');
 
@@ -55,7 +51,7 @@ class AbilityController extends Controller
      */
     public function roles()
     {
-        $this->authorize($this->adminRoutePrefix . '.permission.listRoles');
+        $this->authorize('permission.listRoles');
 
         $data = [
             'items' => Permission::roleModel()::with('users')->paginate(config('permission.itemPerPage')),
@@ -73,7 +69,7 @@ class AbilityController extends Controller
      */
     public function index()
     {
-        $this->authorize($this->adminRoutePrefix . '.permission.listAbilities');
+        $this->authorize('permission.listAbilities');
 
         $query = Permission::abilityModel()::with('roles');
 
@@ -99,7 +95,7 @@ class AbilityController extends Controller
      */
     public function update($id)
     {
-        $this->authorize($this->adminRoutePrefix . '.permission.updateAbility');
+        $this->authorize('permission.updateAbility');
 
         $params[request('name')] = request('value');
 
@@ -116,7 +112,7 @@ class AbilityController extends Controller
      */
     public function roleAbilities($roleId)
     {
-        $this->authorize($this->adminRoutePrefix . '.permission.roleAbilities');
+        $this->authorize('permission.roleAbilities');
 
         $role = Permission::roleModel()::findOrFail($roleId);
 
@@ -138,7 +134,7 @@ class AbilityController extends Controller
      */
     public function updateRoleAbility($roleId)
     {
-        $this->authorize($this->adminRoutePrefix . '.permission.updateRoleAbility');
+        $this->authorize('permission.updateRoleAbility');
 
         $role = Permission::roleModel()::noSuperAdmin()->findOrFail($roleId);
 

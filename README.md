@@ -78,7 +78,7 @@ There is an admin interface with routes and views for handling ability and permi
         
 Now you can access permission interface via ```admin/permission/roles``` routes
 
-Note: If you use admin routes prefix other than 'admin' then change ```adminPrefix``` value in ```config/permission.php```
+Note: If you use admin routes prefix other than 'admin' then change ```adminRoutePrefix``` value in ```config/permission.php```
 
 ## Usage
 

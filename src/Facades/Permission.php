@@ -84,7 +84,7 @@ class Permission extends Facade
         Route::get('permission/roles', $namespace .'AbilityController@roles')->name('permission.listRoles');
         
         Route::get('permission/abilities', $namespace .'AbilityController@index')->name('permission.listAbilities');
-        Route::get('permission/abilities/sync', $namespace .'AbilityController@sync')->name('permission.syncAbilities');
+        Route::get('permission/abilities/record', $namespace .'AbilityController@record')->name('permission.recordAbilities');
         Route::post('permission/abilities/{id}', $namespace .'AbilityController@update')->name('permission.updateAbility'); 
 
         Route::get('permission/roles/{roleId}/abilities', $namespace .'AbilityController@roleAbilities')->name('permission.roleAbilities');

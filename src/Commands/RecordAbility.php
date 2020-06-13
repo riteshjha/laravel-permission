@@ -3,6 +3,7 @@
 namespace Rkj\Permission\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
@@ -31,7 +32,7 @@ class RecordAbility extends Command
      */
     public function handle()
     {
-        echo "Processing Route ability... \n";
+        if(!App::environment('testing')) echo "Processing Route ability... \n";
 
         if ($this->option('fresh')) $this->truncateAbility();
 
@@ -49,7 +50,7 @@ class RecordAbility extends Command
             }
         }
 
-        echo "Processing Field ability... \n";
+        if(!App::environment('testing')) echo "Processing Field ability... \n";
 
         $modelNamespace = config('permission.model.namespace');
 
@@ -69,7 +70,7 @@ class RecordAbility extends Command
             }
         });
 
-        echo "Done\n";
+        if(!App::environment('testing')) echo "Done\n";
     }
 
     /**
