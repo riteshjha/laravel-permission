@@ -68,7 +68,9 @@ class PermissionServiceProvider extends ServiceProvider
     {
         $path = $this->getMigrationsPath();
 
-        $this->publishes([$path => database_path('migrations')], 'migrations');
+        $this->publishes([
+            $path . '/' . 'create_permission_setup_table.php.stub'  => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_permission_setup_table.php'),
+        ], 'migrations');
     }
 
     /**

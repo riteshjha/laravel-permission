@@ -79,6 +79,8 @@ trait UserHasRole
         }
 
         $this->roles()->sync($role, false);
+
+        return $this;
     }
 
     /**
