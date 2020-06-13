@@ -2,6 +2,9 @@
 
 namespace Rkj\Permission\Controllers;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Validator;
@@ -10,7 +13,11 @@ use Rkj\Permission\Facades\Permission;
 
 class AbilityController extends Controller
 {
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
     protected $searchKey = 'search';
+
+    protected $adminRoutePrefix = '';
 
     /**
      * Construct base controller
@@ -22,6 +29,8 @@ class AbilityController extends Controller
 
             return $next($request);
         });
+
+        $this->adminRoutePrefix = config('permission.adminRoutePrefix');
     }
 
     /**
@@ -31,6 +40,8 @@ class AbilityController extends Controller
      */
     public function sync()
     {
+        $this->authorize($this->adminRoutePrefix . '.permission.syncAbilities');
+
         Artisan::call('ability:record');
 
         return '';
@@ -44,6 +55,8 @@ class AbilityController extends Controller
      */
     public function roles()
     {
+        $this->authorize($this->adminRoutePrefix . '.permission.listRoles');
+
         $data = [
             'items' => Permission::roleModel()::with('users')->paginate(config('permission.itemPerPage')),
             'roleGroups' => Permission::abilityModel()::roleGroups()
@@ -60,6 +73,8 @@ class AbilityController extends Controller
      */
     public function index()
     {
+        $this->authorize($this->adminRoutePrefix . '.permission.listAbilities');
+
         $query = Permission::abilityModel()::with('roles');
 
         $searchKey = request($this->searchKey, false);
@@ -77,6 +92,23 @@ class AbilityController extends Controller
     }
 
     /**
+     * Update ability partials
+     *
+     * @param int $id
+     * @return void
+     */
+    public function update($id)
+    {
+        $this->authorize($this->adminRoutePrefix . '.permission.updateAbility');
+
+        $params[request('name')] = request('value');
+
+        Permission::abilityModel()::where('id', $id)->update($params);
+
+        return response()->json();
+    }
+
+    /**
      * List permission based on roles
      *
      * @param [type] $roleId
@@ -84,6 +116,8 @@ class AbilityController extends Controller
      */
     public function roleAbilities($roleId)
     {
+        $this->authorize($this->adminRoutePrefix . '.permission.roleAbilities');
+
         $role = Permission::roleModel()::findOrFail($roleId);
 
         $data = [
@@ -98,27 +132,14 @@ class AbilityController extends Controller
     }
 
     /**
-     * Update ability partials
-     *
-     * @param int $id
-     * @return void
-     */
-    public function update($id)
-    {
-        $params[request('name')] = request('value');
-
-        Permission::abilityModel()::where('id', $id)->update($params);
-
-        return response()->json();
-    }
-
-    /**
      * Update role permission
      * 
      * @param int $roleId
      */
     public function updateRoleAbility($roleId)
     {
+        $this->authorize($this->adminRoutePrefix . '.permission.updateRoleAbility');
+
         $role = Permission::roleModel()::noSuperAdmin()->findOrFail($roleId);
 
         $data = [
