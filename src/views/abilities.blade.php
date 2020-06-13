@@ -70,7 +70,7 @@
         function syncAbility(){
             $('#sync').html('<i class="fas fa-sync fa-spin"></i>').attr('disabled', true);
 
-            $.get('{{ route("permission.syncAbilities") }}', function(response){
+            $.get('{{ route("permission.recordAbilities") }}', function(response){
                 window.location.reload(true);
             }).always(function() {
                 $('#sync').removeAttr('disabled').html('<i class="fas fa-sync"></i>');
