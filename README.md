@@ -84,6 +84,8 @@ Note: If you use admin routes prefix other than 'admin' then change ```adminRout
 
 Package use laravel gate, so you can use ``` can('project.create') ``` in view and ``` $this->authorize('project.create') ``` in controller for route ability. And ``` can('projects::cost') ``` for field ability in view. Here projects is a table name.
 
+For Details check <a href="https://github.com/riteshjha/laravel-permission/tree/master/tests">Tests</a>
+
 #### Create/Update
 
 When creating or updating record in model then filter data using ``` filterFieldAccess ``` method like :
