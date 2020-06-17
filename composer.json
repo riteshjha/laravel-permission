@@ -1,5 +1,5 @@
 {
-    "name": "riteshjha/permission",
+    "name": "riteshjha/laravel-permission",
     "description": "Laravel role and user based permission",
     "type": "library",
     "license": "MIT",
