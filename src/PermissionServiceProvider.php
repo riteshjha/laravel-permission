@@ -92,7 +92,7 @@ class PermissionServiceProvider extends ServiceProvider
      */
     protected function publishAssets()
     {        
-        $this->publishes([__DIR__ . '/assets' => public_path('vendor/permission')], 'public');
+        $this->publishes([__DIR__ . '/../resources/assets' => public_path('vendor/permission')], 'public');
     }
 
     /**
@@ -102,7 +102,7 @@ class PermissionServiceProvider extends ServiceProvider
      */
     protected function getConfigPath()
     {
-        return __DIR__ . '/config/permission.php';
+        return __DIR__ . '/../config/permission.php';
     }
 
     /**
@@ -122,7 +122,7 @@ class PermissionServiceProvider extends ServiceProvider
      */
     protected function getViewPath()
     {
-        return __DIR__.'/views';
+        return __DIR__.'/../resources/views';
     }
 
     /**
