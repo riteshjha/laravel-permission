@@ -112,7 +112,7 @@ class PermissionServiceProvider extends ServiceProvider
      */
     protected function getMigrationsPath()
     {
-        return __DIR__ . '/database/migrations';
+        return __DIR__ . '/../database/migrations';
     }
 
     /**
