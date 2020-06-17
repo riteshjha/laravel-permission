@@ -3,19 +3,10 @@ This package allows you to manage user permissions in a database using role and 
 
 ## Installation
 
-1. Update composer.json and add a repository:
+1. Require it with Composer
 
     ```
-    "repositories" : [
-            {
-                "type": "vcs",
-                "url": "https://github.com/riteshjha/laravel-permission.git"   
-            }
-        ],
-    
-    "require": {
-            "riteshjha/permission": "dev-master"
-    }
+    composer require riteshjha/laravel-permission    
     ```
 2. Run Composer: ``` composer update ```
 
