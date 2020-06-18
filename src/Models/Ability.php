@@ -11,12 +11,6 @@ use Rkj\Permission\Models\Traits\HasPermission;
 class Ability extends Model implements Permissionable
 {
     use HasPermission;
-    
-    public const LEVEL_OWNER = 1;
-    public const LEVEL_ACCOUNT = 2;
-
-    public const GROUP_SYSTEM = 1;
-    public const GROUP_ACCOUNT = 2;
 
     protected $fillable = ['name', 'label', 'group'];
 
@@ -43,7 +37,7 @@ class Ability extends Model implements Permissionable
      */
     public function isSystemGroup()
     {
-        return $this->group == static::GROUP_SYSTEM;
+        return $this->group == Permission::GROUP_SYSTEM;
     }
 
     /**
@@ -53,7 +47,7 @@ class Ability extends Model implements Permissionable
      */
     public function isAccountGroup()
     {
-        return $this->group == static::GROUP_ACCOUNT;
+        return $this->group == Permission::GROUP_ACCOUNT;
     }
 
     /**
@@ -67,27 +61,13 @@ class Ability extends Model implements Permissionable
     }
 
     /**
-     * permission levels
-     *
-     * @return void
-     */
-    public static function permissionLevels()
-    {
-        $levels = collect([static::LEVEL_OWNER => 'Owner', static::LEVEL_ACCOUNT => 'Account']);
-
-        return config('permission.level') == 'account'
-                ?  $levels->all()
-                :  $levels->except(static::LEVEL_ACCOUNT)->all();
-    }
-
-    /**
      * role groups
      *
      * @return void
      */
     public static function roleGroups()
     {
-        return [static::GROUP_SYSTEM => 'System', static::GROUP_ACCOUNT => 'Account'];
+        return [Permission::GROUP_SYSTEM => 'System', Permission::GROUP_ACCOUNT => 'Account'];
     }
 
     

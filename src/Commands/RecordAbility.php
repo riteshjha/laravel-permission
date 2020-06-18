@@ -42,8 +42,8 @@ class RecordAbility extends Command
             $middlewares = $route->gatherMiddleware();
 
             $group = (Str::of($route->getPrefix())->ltrim('/') == config('permission.adminPrefix')) 
-                        ? config('permission.model.ability')::GROUP_SYSTEM 
-                        : config('permission.model.ability')::GROUP_ACCOUNT;
+                        ? Permission::GROUP_SYSTEM 
+                        : Permission::GROUP_ACCOUNT;
 
             if (in_array('auth', $middlewares) && !empty($name)) {
                 $this->updateOrCreateAbility($name, $group);
@@ -63,7 +63,7 @@ class RecordAbility extends Command
                 $fields = (new $modelWithNamespace)->fieldAvilities();
 
                 foreach($fields as $field){
-                    $group = config('permission.model.ability')::GROUP_ACCOUNT;
+                    $group = Permission::GROUP_ACCOUNT;
 
                     $this->updateOrCreateAbility($field, $group);
                 }

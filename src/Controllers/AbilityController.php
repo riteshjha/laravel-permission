@@ -119,7 +119,7 @@ class AbilityController extends Controller
         $data = [
             'items' => $this->fetchRoleAbilities($role),
             'roleGroups' => Permission::abilityModel()::roleGroups(),
-            'permissionLevels' => Permission::abilityModel()::permissionLevels(),
+            'permissionLevels' => Permission::levels(),
             'roles' => Permission::roleModel()::noSuperAdmin()->get(),
             'selectedRole' => $role
         ];

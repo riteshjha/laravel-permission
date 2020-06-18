@@ -8,6 +8,12 @@ use Illuminate\Support\Str;
 
 class Permission extends Facade
 {
+    public const LEVEL_OWNER = 1;
+    public const LEVEL_ACCOUNT = 2;
+
+    public const GROUP_SYSTEM = 1;
+    public const GROUP_ACCOUNT = 2;
+
     /**
      * Get the registered name of the component.
      *
@@ -70,6 +76,20 @@ class Permission extends Facade
     public static function superAdminRole()
     {
         return config('permission.role.superAdmin');
+    }
+
+    /**
+     * permission levels
+     *
+     * @return void
+     */
+    public static function levels()
+    {
+        $levels = collect([static::LEVEL_OWNER => 'Owner', static::LEVEL_ACCOUNT => 'Account']);
+
+        return config('permission.level') == 'account'
+                ?  $levels->all()
+                :  $levels->except(static::LEVEL_ACCOUNT)->all();
     }
 
     /**
