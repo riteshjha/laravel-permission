@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Rkj\Permission\Facades\Permission;
 use Rkj\Permission\Models\Ability;
 
 class PermissionSeeder extends Seeder
@@ -19,11 +20,11 @@ class PermissionSeeder extends Seeder
     public function run()
     {
         $roles = [
-            ['id' => '1', 'name' => 'superadmin', 'label' => 'Super Admin', 'group' => Role::GROUP_SYSTEM, 'created_at' => now(), 'updated_at' => now()],
-            ['id' => '2', 'name' => 'admin', 'label' => 'Admin', 'group' => Role::GROUP_SYSTEM, 'created_at' => now(), 'updated_at' => now()],
-            ['id' => '10', 'name' => 'seller', 'label' => 'Seller', 'group' => Role::GROUP_ACCOUNT, 'created_at' => now(), 'updated_at' => now()],
-            ['id' => '11', 'name' => 'manager', 'label' => 'Manager', 'group' => Role::GROUP_ACCOUNT, 'created_at' => now(), 'updated_at' => now()],
-            ['id' => '20', 'name' => 'vendor', 'label' => 'Vendor', 'group' => Role::GROUP_ACCOUNT, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => '1', 'name' => 'superadmin', 'label' => 'Super Admin', 'group' => Permission::GROUP_SYSTEM, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => '2', 'name' => 'admin', 'label' => 'Admin', 'group' => Permission::GROUP_SYSTEM, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => '10', 'name' => 'seller', 'label' => 'Seller', 'group' => Permission::GROUP_ACCOUNT, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => '11', 'name' => 'manager', 'label' => 'Manager', 'group' => Permission::GROUP_ACCOUNT, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => '20', 'name' => 'vendor', 'label' => 'Vendor', 'group' => Permission::GROUP_ACCOUNT, 'created_at' => now(), 'updated_at' => now()],
         ];
 
         DB::table('roles')->insert($roles);
@@ -94,7 +95,7 @@ class PermissionSeeder extends Seeder
                 'user.info',
                 'user.profile'
             ],
-            'level' => Ability::LEVEL_ACCOUNT
+            'level' => Permission::LEVEL_ACCOUNT
         ];
     }   
     
@@ -110,7 +111,7 @@ class PermissionSeeder extends Seeder
                 'user.info',
                 'user.profile'
             ],
-            'level' => Ability::LEVEL_OWNER
+            'level' => Permission::LEVEL_OWNER
         ];
     }   
 

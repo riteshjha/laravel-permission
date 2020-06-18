@@ -5,6 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Rkj\Permission\Models\Ability;
 use Illuminate\Support\Str;
+use Rkj\Permission\Facades\Permission;
 
 class CreatePermissionSetupTable extends Migration
 {
@@ -19,7 +20,7 @@ class CreatePermissionSetupTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('label')->nullable();
-            $table->unsignedTinyInteger('group')->default(Ability::GROUP_ACCOUNT);
+            $table->unsignedTinyInteger('group')->default(Permission::GROUP_ACCOUNT);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -28,14 +29,14 @@ class CreatePermissionSetupTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->unique();
             $table->string('label')->nullable();
-            $table->unsignedTinyInteger('group')->default(Ability::GROUP_ACCOUNT);
+            $table->unsignedTinyInteger('group')->default(Permission::GROUP_ACCOUNT);
             $table->softDeletes();
             $table->timestamps();
         });
 
         Schema::create('abilitables', function (Blueprint $table) {
             $table->unsignedBigInteger('ability_id');
-            $table->unsignedTinyInteger('level')->default(Ability::LEVEL_OWNER);
+            $table->unsignedTinyInteger('level')->default(Permission::LEVEL_OWNER);
             $table->unsignedBigInteger('abilitable_id');
             $table->string('abilitable_type');
             $table->softDeletes();

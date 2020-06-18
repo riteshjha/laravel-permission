@@ -11,7 +11,4 @@ use Rkj\Permission\Models\Traits\RoleHasAbility;
 class Role extends Model implements Permissionable
 {
     use RoleHasAbility, HasPermission;
-
-    public const GROUP_SYSTEM = 1;
-    public const GROUP_ACCOUNT = 2;
 }
