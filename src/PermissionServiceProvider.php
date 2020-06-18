@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Stringable;
 use Rkj\Permission\Commands\RecordAbility;
 
 class PermissionServiceProvider extends ServiceProvider
@@ -45,6 +46,8 @@ class PermissionServiceProvider extends ServiceProvider
         });
 
         $this->searchMacro();
+
+        $this->stringableMacro();
     }
 
     /**
@@ -166,5 +169,17 @@ class PermissionServiceProvider extends ServiceProvider
 
             return $this;
         });
+    }
+
+    /**
+     * Macro on stringable
+     *
+     * @return void
+     */
+    public function stringableMacro()
+    {
+        Stringable::macro('foreignKey', function (string $value) {
+            return $value->basename()->lower()->append('_id');
+        }); 
     }
 }

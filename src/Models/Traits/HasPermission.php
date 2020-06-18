@@ -16,9 +16,9 @@ trait HasPermission
      */
     public function owner()
     {
-        $userId = Str::of(Permission::userModel())->append('_id');
+        $userId = Str::of(Permission::userModel())->foreignKey();
 
-        $accountId = Str::of(Permission::accountModel())->append('_id');
+        $accountId = Str::of(Permission::accountModel())->foreignKey();
 
         if($this->hasColumn($userId)){
             return $this->belongsTo(Permission::userModel(), $userId);
@@ -159,7 +159,7 @@ trait HasPermission
      */
     protected function isOwner($authUser)
     {
-        $userId = Str::of(Permission::userModel())->append('_id');
+        $userId = Str::of(Permission::userModel())->foreignKey();
 
         return $this->{$userId} = $authUser->id;
     }
@@ -173,7 +173,7 @@ trait HasPermission
     {
         if(method_exists($this, 'owner')) $this->load('owner');
 
-        $accountId = Str::of(Permission::accountModel())->append('_id');
+        $accountId = Str::of(Permission::accountModel())->foreignKey();
 
         return $this->owner->{$accountId} = $authUser->{$accountId};
     }
