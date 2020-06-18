@@ -178,8 +178,8 @@ class PermissionServiceProvider extends ServiceProvider
      */
     public function stringableMacro()
     {
-        Stringable::macro('foreignKey', function (string $value) {
-            return $value->basename()->lower()->append('_id');
+        Stringable::macro('foreignKey', function () {
+            return $this->value->basename()->lower()->append('_id');
         }); 
     }
 }
