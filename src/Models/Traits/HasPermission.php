@@ -30,6 +30,27 @@ trait HasPermission
     }
 
     /**
+     * Default model level permision
+     *
+     * @param User $authUser
+     * @param string $ability
+     * @param int $level
+     * @return boolean
+     */
+    public function hasPermission($authUser, $ability, $level)
+    {
+        $result = false;
+
+        if (config('permission.level') == 'account') {
+            $result = $this->accountLevelPermission($authUser, $ability, $level);
+        }else {
+            $result = $this->isOwner($authUser, $ability, $level);
+        }
+
+        return $result;
+    }
+
+    /**
      * Get field abilities of this model
      *
      * @return array
@@ -70,24 +91,21 @@ trait HasPermission
     }
 
     /**
-     * Default model level permision
+     * Allow field abilities. Use it in seeder to allow field ability
      *
-     * @param User $authUser
-     * @param string $ability
-     * @param int $level
-     * @return boolean
+     * @param array|string $abilities
+     * @return array
      */
-    public function hasPermission($authUser, $ability, $level)
+    public static function allowFieldAbilities($abilities)
     {
-        $result = false;
+        $arrAbilities = is_string($abilities) ? explode(',', $abilities)  : $abilities; 
 
-        if (config('permission.level') == 'account') {
-            $result = $this->accountLevelPermission($authUser, $ability, $level);
-        }else {
-            $result = $this->isOwner($authUser, $ability, $level);
-        }
+        $obj = new static;
 
-        return $result;
+        return collect($arrAbilities)->transform(function($field) use ($obj) {
+            return $obj->constructFieldAbility($field);
+        })->toArray();
+        
     }
 
     /**
@@ -100,7 +118,6 @@ trait HasPermission
     {
         return $this->table() . ':' . $field;
     }
-
 
     /**
      * @return string
@@ -154,7 +171,6 @@ trait HasPermission
      */
     protected function isAccountOwner($authUser)
     {
-
         if(method_exists($this, 'owner')) $this->load('owner');
 
         $accountId = Str::of(Permission::accountModel())->append('_id');

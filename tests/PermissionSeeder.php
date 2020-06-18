@@ -93,7 +93,8 @@ class PermissionSeeder extends Seeder
         return [
             'abilities' => [
                 'user.info',
-                'user.profile'
+                'user.profile',
+                User::allowFieldAbilities('remember_token')
             ],
             'level' => Permission::LEVEL_ACCOUNT
         ];

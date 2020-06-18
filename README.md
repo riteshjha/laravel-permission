@@ -46,8 +46,10 @@ Package handle 2 types of ability (route ability and field ability). Package par
 
     class Project extends Model
     {
-        protected $fieldAbility = ['cost', 'estimated_cost'] ; //list projects table fields on which you want to apply permission
+        protected $fieldAbilities = ['cost', 'estimated_cost'] ; //list projects table fields on which you want to apply permission
     }
+
+    You can use ``` Project::allowFieldAbilities(['cost']) ``` in your seeder to alow default field ability. For details check ``` PermissionSeeder ``` in tests.
     
 ## Role and Ability Group
 
