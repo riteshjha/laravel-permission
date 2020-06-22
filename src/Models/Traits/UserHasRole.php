@@ -23,7 +23,7 @@ trait UserHasRole
      */
     public function systemRoles()
     {
-        return $this->roles()->where('group', Permission::abilityModel()::GROUP_SYSTEM);
+        return $this->roles()->where('group', Permission::GROUP_SYSTEM);
     }
 
     /**
@@ -33,7 +33,7 @@ trait UserHasRole
      */
     public function accountRoles()
     {
-        return $this->roles()->where('group', Permission::abilityModel()::GROUP_ACCOUNT);
+        return $this->roles()->where('group', Permission::GROUP_ACCOUNT);
     }
 
     /**
@@ -100,7 +100,7 @@ trait UserHasRole
      */
     public function isSystemUser()
     {
-        return $this->roles->pluck('group')->contains(Permission::abilityModel()::GROUP_SYSTEM);
+        return $this->roles->pluck('group')->contains(Permission::GROUP_SYSTEM);
     }
 
     /**
@@ -110,7 +110,7 @@ trait UserHasRole
      */
     public function isAccountUser()
     {
-        return $this->roles->pluck('group')->contains(Permission::abilityModel()::GROUP_ACCOUNT);
+        return $this->roles->pluck('group')->contains(Permission::GROUP_ACCOUNT);
     }
 
     /**

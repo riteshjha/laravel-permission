@@ -18,11 +18,10 @@ trait HasPermission
     {
         $userId = Str::of(Permission::userModel())->foreignKey();
 
-        $accountId = Str::of(Permission::accountModel())->foreignKey();
-
         if($this->hasColumn($userId)){
             return $this->belongsTo(Permission::userModel(), $userId);
         }elseif(get_class($this) == Permission::accountModel()) {
+            $accountId = Str::of(Permission::accountModel())->foreignKey();
             return $this->hasOne(Permission::userModel(), $accountId);
         }else{
             return null;
