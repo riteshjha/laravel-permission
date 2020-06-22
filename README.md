@@ -1,4 +1,10 @@
 # Laravel Permission (Account and Owner Level Check)
+
+[![Latest Version on Packagist][ico-version]][link-packagist]
+[![Total Downloads][ico-downloads]][link-downloads]
+[![Software License][ico-license]](LICENSE.md)
+
+
 This package allows you to manage user permissions in a database using role and direct user based permission with Account (Organization) level and owner level permission check. It handle 2 types of abilities (route ability and field ability).
 
 ## Installation
@@ -84,3 +90,9 @@ For Details check <a href="https://github.com/riteshjha/laravel-permission/tree/
 When creating or updating record in model then filter data using ``` filterFieldAccess ``` method like :
 
     $data = Project::filterFieldAccess($data)
+
+[ico-version]: https://img.shields.io/packagist/v/riteshjha/laravel-permission.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/riteshjha/laravel-permission.svg?style=flat-square
+[link-packagist]: https://packagist.org/packages/riteshjha/laravel-permission
+[link-downloads]: https://packagist.org/packages/riteshjha/laravel-permission
+[ico-license]: https://img.shields.io/badge/license-MIT-green.svg?style=flat-square
