@@ -146,7 +146,7 @@ trait HasPermission
      */
     protected function accountLevelPermission($authUser, $ability, $level)
     {
-        return $level == Permission::abilityModel()::LEVEL_ACCOUNT
+        return $level == Permission::LEVEL_ACCOUNT
             ? $this->isAccountOwner($authUser)
             : $this->isOwner($authUser);
     }
