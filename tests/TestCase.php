@@ -39,22 +39,9 @@ class TestCase extends FrameworkTestCase
 
     protected function getEnvironmentSetUp($app)
     {
-        $app['config']->set('permission', [
-            'level' => env('PERMISSION_LEVEL', 'owner'), 
-            'disableAbilityGroup' => env('PERMISSION_DISABLE_ABILITY_GROUP', false),
-            'model' => [      
-                'namespace' => env('PERMISSION_MODEL_NAMESPACE','App'),
-                'user' => env('PERMISSION_MODEL_USER','User'),
-                'role' => env('PERMISSION_MODEL_ROLE','Role'),
-                'ability' => env('PERMISSION_MODEL_ABILITY', 'Rkj\Permission\Models\Ability'),
-                'account' => env('PERMISSION_MODEL_ACCOUNT','Account'),
-            ],
-            'role' => [
-                'superAdmin' => env('PERMISSION_ROLE_SUPPERADMIN','superadmin'),
-            ],
-            'adminPrefix' => env('PERMISSION_ADMIN_ROUTE_PREFIX','admin'),
-            'itemPerPage' => env('PERMISSION_ITEM_PERPAGE',15),
-        ]);
+        $permission = require __DIR__ . '/../config/permission.php';
+
+        $app['config']->set('permission', $permission);
     }
 
 
