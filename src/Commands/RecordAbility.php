@@ -45,7 +45,7 @@ class RecordAbility extends Command
                         ? Permission::GROUP_SYSTEM 
                         : Permission::GROUP_ACCOUNT;
 
-            if (in_array('auth', $middlewares) && !empty($name)) {
+            if (in_array(config('permission.authMiddleware'), $middlewares) && !empty($name)) {
                 $this->updateOrCreateAbility($name, $group);
             }
         }

@@ -26,4 +26,6 @@ return [
     'adminRoutePrefix' => env('PERMISSION_ADMIN_ROUTE_PREFIX','admin'), //prefix used for admin routes
 
     'itemPerPage' => env('PERMISSION_ITEM_PERPAGE',15),
+
+    'authMiddleware' => env('PERMISSION_AUTH_MIDDLEWARE','auth')
 ];
