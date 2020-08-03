@@ -60,7 +60,7 @@ class RecordAbility extends Command
           
             if(in_array('Rkj\Permission\Contracts\Permissionable', class_implements($modelWithNamespace))){
 
-                $fields = (new $modelWithNamespace)->fieldAvilities();
+                $fields = (new $modelWithNamespace)->fieldAbilities();
 
                 foreach($fields as $field){
                     $group = Permission::GROUP_ACCOUNT;
