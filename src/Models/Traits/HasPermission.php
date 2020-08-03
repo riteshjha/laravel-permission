@@ -134,7 +134,7 @@ trait HasPermission
      */
     protected function hasColumn($column)
     {
-        return Schema::hasColumn(static::table(), $column);
+        return Schema::hasColumn($this->table(), $column);
     }
 
     /**
