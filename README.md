@@ -14,9 +14,12 @@ This package allows you to manage user permissions in a database using role and 
     ```
     composer require riteshjha/laravel-permission    
     ```
-2. Run Composer: ``` composer update ```
+2. You can publish the migrations, views, assets and the config file with:
 
-3. Optional: The service provider and alias will automatically get registered. Or you may manually add the service provider in your config/app.php file:
+    ```
+    php artisan vendor:publish --provider="Rkj\Permission\PermissionServiceProvider"
+    ```
+3. Add the service provider in your config/app.php file:
 
     ```
     'providers' => [
@@ -29,14 +32,9 @@ This package allows you to manage user permissions in a database using role and 
         'Permission' => Rkj\Permission\Facades\Permission::class
     ];
     ```
-4. You can publish the migrations, views, assets and the config file with:
+4. This package publishes a ```config/permission.php``` file. Check this file and change accourding to your needs for different (Ability, Role and User) model name and other config options.
 
-    ```
-    php artisan vendor:publish --provider="Rkj\Permission\PermissionServiceProvider"
-    ```
-5. This package publishes a ```config/permission.php``` file. Check this file and change accourding to your needs for different (Ability, Role and User) model name and other config options.
-
-6. Run migrations: ``` php artisan migrate ```
+5. Run migrations: ``` php artisan migrate ```
 
 ## Configuration
 
