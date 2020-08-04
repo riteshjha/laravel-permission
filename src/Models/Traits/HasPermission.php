@@ -56,10 +56,11 @@ trait HasPermission
      */
     public function fieldAbilities()
     {
-        return collect($this->fieldAbilities)
-                ->transform(function($field){
-                    return $this->constructFieldAbility($field);
-                })->toArray();
+        return ($this->fieldAbilities)
+                ? collect($this->fieldAbilities)->transform(function($field){
+                        return $this->constructFieldAbility($field);
+                    })->toArray()
+                : [];
     }
 
     /**
