@@ -17,7 +17,7 @@ interface Permissionable
      *
      * @return array
      */
-    public function fieldAbilities();
+    public function getFieldAbilities();
 
     /**
      * Handle model level permision

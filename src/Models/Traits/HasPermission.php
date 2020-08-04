@@ -54,7 +54,7 @@ trait HasPermission
      *
      * @return array
      */
-    public function fieldAbilities()
+    public function getFieldAbilities()
     {
         return ($this->fieldAbilities)
                 ? collect($this->fieldAbilities)->transform(function($field){
@@ -73,7 +73,7 @@ trait HasPermission
     {
         $model = new static;
 
-        $abilities = $model->fieldAbilities();
+        $abilities = $model->getFieldAbilities();
 
         if(count($abilities) <= 0) return $data;
 

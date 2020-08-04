@@ -54,13 +54,15 @@ class RecordAbility extends Command
 
         $modelNamespace = config('permission.model.namespace');
 
-        collect(glob(base_path($modelNamespace . '/*.php')))->map(function ($filename) use ($modelNamespace) {
+        $modelsPath = base_path(str_replace('\\', DIRECTORY_SEPARATOR, $modelNamespace ) . DIRECTORY_SEPARATOR . '*.php');
+
+        collect(glob($modelsPath))->map(function ($filename) use ($modelNamespace) {
 
             $modelWithNamespace = $modelNamespace . '\\' . basename($filename, '.php');
           
             if(in_array('Rkj\Permission\Contracts\Permissionable', class_implements($modelWithNamespace))){
 
-                $fields = (new $modelWithNamespace)->fieldAbilities();
+                $fields = (new $modelWithNamespace)->getFieldAbilities();
 
                 foreach($fields as $field){
                     $group = Permission::GROUP_ACCOUNT;
