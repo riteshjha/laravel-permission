@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use ReflectionClass;
 use Rkj\Permission\Facades\Permission;
 
 class RecordAbility extends Command
@@ -59,8 +60,10 @@ class RecordAbility extends Command
         collect(glob($modelsPath))->map(function ($filename) use ($modelNamespace) {
 
             $modelWithNamespace = $modelNamespace . '\\' . basename($filename, '.php');
+
+            $reflectionModelClass     = new ReflectionClass($modelWithNamespace);
           
-            if(in_array('Rkj\Permission\Contracts\Permissionable', class_implements($modelWithNamespace))){
+            if(! $reflectionModelClass->isAbstract() && in_array('Rkj\Permission\Contracts\Permissionable', class_implements($modelWithNamespace))){
 
                 $fields = (new $modelWithNamespace)->getFieldAbilities();
 
