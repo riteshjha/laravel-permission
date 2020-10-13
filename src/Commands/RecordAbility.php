@@ -41,7 +41,7 @@ class RecordAbility extends Command
 
             $middlewares = $route->gatherMiddleware();
 
-            $group = (Str::of($route->getPrefix())->ltrim('/') == config('permission.adminPrefix')) 
+            $group = (Str::of($route->getPrefix())->ltrim('/') == config('permission.adminRoutePrefix')) 
                         ? Permission::GROUP_SYSTEM 
                         : Permission::GROUP_ACCOUNT;
 
