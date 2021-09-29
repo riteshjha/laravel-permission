@@ -161,7 +161,7 @@ trait HasPermission
     {
         $userId = Str::of(Permission::userModel())->foreignKey();
 
-        return $this->{$userId} = $authUser->id;
+        return $this->{$userId} == $authUser->id;
     }
 
     /**
@@ -175,6 +175,6 @@ trait HasPermission
 
         $accountId = Str::of(Permission::accountModel())->foreignKey();
 
-        return $this->owner->{$accountId} = $authUser->{$accountId};
+        return $this->owner->{$accountId} == $authUser->{$accountId};
     }
 }
