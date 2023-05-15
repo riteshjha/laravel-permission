@@ -133,24 +133,13 @@ trait UserHasRole
      */
     public function hasAccess($ability, $params)
     {
-        $result = false;
-
-        $model = null;
+        $model = (count($params) > 0) ? $params[0] : null;
 
         $permission = $this->abilities()->where('name', $ability)->first();
         
         $level = ($permission) ? $permission->pivot->level : 0;
 
-        if ($level > 0) { //$level > 0 means has permission
-
-            $result = true;
-
-            $model = (count($params) > 0) ? $params[0] : null;
-
-            if (!$this->isSystemUser() && $model) {
-                $result = $model->hasPermission($this, $ability, $level);
-            }
-        }
+        $result = $model ? $model->hasPermission($this, $ability, $level) : true;
 
         return $this->afterAccess($result, $ability, $model);
     }
