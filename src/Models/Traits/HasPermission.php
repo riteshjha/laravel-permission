@@ -46,7 +46,7 @@ trait HasPermission
             $result = $this->isOwner($authUser, $ability, $level);
         }
 
-        return $result;
+        return $this->extraPermission($result, $ability, $level);
     }
 
     /**
@@ -176,5 +176,18 @@ trait HasPermission
         $accountId = Str::of(Permission::accountModel())->foreignKey();
 
         return $this->owner->{$accountId} == $authUser->{$accountId};
+    }
+    
+    /**
+     * This method can be used to extend the permission check in model class
+     *
+     * @param boolean $result
+     * @param string $ability
+     * @param int $level
+     * @return boolean
+     */
+    protected function extraPermission($result, $ability, $level)
+    {
+        return $result;
     }
 }
