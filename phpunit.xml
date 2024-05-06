@@ -12,7 +12,7 @@
   </testsuites>
   <php>
     <env name="DB_CONNECTION" value="sqlite"/>
-    <env name="DB_DATABASE" value="/Users/ritesh/code/permission/database/database.sqlite"/>
+    <env name="DB_DATABASE" value="/database/database.sqlite"/>
     <env name="APP_DEBUG" value="true"/>
     <env name="APP_KEY" value="base64:YWIovmICmAkQoSrAyvn15kD1j9IuaWKIyrgMTyaxMjk="/>
     <env name="PERMISSION_MODEL_NAMESPACE" value="Rkj\Permission\Tests\Models"/>
