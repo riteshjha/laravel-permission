@@ -139,7 +139,7 @@ trait UserHasRole
         
         $level = ($permission) ? $permission->pivot->level : 0;
 
-        $result = $model ? $model->hasPermission($this, $ability, $level) : true;
+        $result = $model ? $model->hasPermission($this, $ability, $level) : ($permission ? true : false);
 
         return $this->afterAccess($result, $ability, $model);
     }
