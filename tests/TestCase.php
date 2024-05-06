@@ -33,7 +33,7 @@ class TestCase extends FrameworkTestCase
     protected function getPackageAliases($app)
     {
         return [
-            'Permission' => Rkj\Permission\Facades\Permission::class
+            'Permission' => \Rkj\Permission\Facades\Permission::class
         ];
     }
 

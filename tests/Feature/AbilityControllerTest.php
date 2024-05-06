@@ -2,12 +2,15 @@
 
 namespace Rkj\Permission\Tests;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Rkj\Permission\Facades\Permission;
 use Rkj\Permission\Models\Ability;
 
 class AbilityControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function setUp(): void
     {
         parent::setUp();
