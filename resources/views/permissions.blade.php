@@ -75,7 +75,7 @@
     <script>
         $(document).ready(function(){
             $('#roles').on('change', function() {
-                window.location.href= '/{{ config('permission.adminPrefix')}}/' + "permission/roles/" + this.value + '/abilities';
+                window.location.href= '/{{ config('permission.adminRoutePrefix')}}/' + "permission/roles/" + this.value + '/abilities';
             });
 
             $('#updatePermission').on('click', function(){
@@ -83,7 +83,7 @@
 
                 $(this).html('<i class="fas fa-sync fa-spin"></i>').attr('disabled', true);
 
-                $.post('{{ route("permission.updateRoleAbility", $selectedRole->id) }}',$('#permissionsListForm').serialize(),  function(response){
+                $.post("/{{ config('permission.adminRoutePrefix')}}/permission/roles/{{ $selectedRole->id }}/abilities",$('#permissionsListForm').serialize(),  function(response){
                 }, 'json').fail(function(response) {
                     alert( "error" );
                 }).always(function() {
