@@ -83,7 +83,7 @@
 
                 $(this).html('<i class="fas fa-sync fa-spin"></i>').attr('disabled', true);
 
-                $.post('{{ route("permission.updateRoleAbility", $selectedRole->id) }}',$('#permissionsListForm').serialize(),  function(response){
+                $.post("/{{ config('permission.adminPrefix')}}/permission/roles/{{ $selectedRole->id }}/abilities",$('#permissionsListForm').serialize(),  function(response){
                 }, 'json').fail(function(response) {
                     alert( "error" );
                 }).always(function() {
